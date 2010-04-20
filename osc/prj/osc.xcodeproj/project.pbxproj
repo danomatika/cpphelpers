@@ -1,0 +1,262 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07555F6C6D10001271781022 /* OscObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 040A3389157A001271781022 /* OscObject.cpp */; };
+		2B752280286D001271781022 /* OscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1ED73EE67B86001271781022 /* OscReceiver.cpp */; };
+		7B3E490222C6001271781022 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29D4599A15FC001271781022 /* OscSender.cpp */; };
+		12F1248A609B001271781022 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F625E284D59001271781022 /* OscTypes.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		603C3A114812001271781022 /* Exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Exception.h"; path = "Exception.h"; sourceTree = "<group>"; };
+		365A6FF901E1001271781022 /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Log.h"; path = "Log.h"; sourceTree = "<group>"; };
+		040A3389157A001271781022 /* OscObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "OscObject.cpp"; path = "OscObject.cpp"; sourceTree = "<group>"; };
+		402E28A5133D001271781022 /* OscObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OscObject.h"; path = "OscObject.h"; sourceTree = "<group>"; };
+		1ED73EE67B86001271781022 /* OscReceiver.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "OscReceiver.cpp"; path = "OscReceiver.cpp"; sourceTree = "<group>"; };
+		468441E34B45001271781022 /* OscReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OscReceiver.h"; path = "OscReceiver.h"; sourceTree = "<group>"; };
+		423D5C10314E001271781022 /* OscReceiverCallback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OscReceiverCallback.h"; path = "OscReceiverCallback.h"; sourceTree = "<group>"; };
+		29D4599A15FC001271781022 /* OscSender.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "OscSender.cpp"; path = "OscSender.cpp"; sourceTree = "<group>"; };
+		32A263CB36E9001271781022 /* OscSender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OscSender.h"; path = "OscSender.h"; sourceTree = "<group>"; };
+		1F625E284D59001271781022 /* OscTypes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "OscTypes.cpp"; path = "OscTypes.cpp"; sourceTree = "<group>"; };
+		75C22E287EFF001271781022 /* OscTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OscTypes.h"; path = "OscTypes.h"; sourceTree = "<group>"; };
+		50924F6512CA001271781022 /* config.h.in */ = {isa = PBXFileReference; lastKnownFileType = text; name = "config.h.in"; path = "config.h.in"; sourceTree = "<group>"; };
+		406E2BCD468A001271781022 /* osc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "osc.h"; path = "osc.h"; sourceTree = "<group>"; };
+		4952333D1D6D001271781022 /* oscframework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "oscframework.h"; path = "oscframework.h"; sourceTree = "<group>"; };
+		36C5517371E6001271781022 /* libosc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libosc.a"; path = "libosc.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5D68160E0F99001271781022 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		659323CE60BC001271781022 /* osc */ = {
+			isa = PBXGroup;
+			children = (
+				16BC1A8868E6001271781022 /* src */,
+				6093651F002C001271781022 /* Products */,
+			);
+			name = osc;
+			sourceTree = "<group>";
+		};
+		16BC1A8868E6001271781022 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				12F27054412C001271781022 /* osc */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		12F27054412C001271781022 /* osc */ = {
+			isa = PBXGroup;
+			children = (
+				603C3A114812001271781022 /* Exception.h */,
+				365A6FF901E1001271781022 /* Log.h */,
+				040A3389157A001271781022 /* OscObject.cpp */,
+				402E28A5133D001271781022 /* OscObject.h */,
+				1ED73EE67B86001271781022 /* OscReceiver.cpp */,
+				468441E34B45001271781022 /* OscReceiver.h */,
+				423D5C10314E001271781022 /* OscReceiverCallback.h */,
+				29D4599A15FC001271781022 /* OscSender.cpp */,
+				32A263CB36E9001271781022 /* OscSender.h */,
+				1F625E284D59001271781022 /* OscTypes.cpp */,
+				75C22E287EFF001271781022 /* OscTypes.h */,
+				50924F6512CA001271781022 /* config.h.in */,
+				406E2BCD468A001271781022 /* osc.h */,
+				4952333D1D6D001271781022 /* oscframework.h */,
+			);
+			name = osc;
+			path = osc;
+			sourceTree = "<group>";
+		};
+		6093651F002C001271781022 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				36C5517371E6001271781022 /* libosc.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		424F579261DF001271781022 /* osc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68DD34ED70E1001271781022 /* Build configuration list for PBXNativeTarget "osc" */;
+			buildPhases = (
+				4D330DA00E13001271781022 /* Resources */,
+				422E087D5E67001271781022 /* Sources */,
+				5D68160E0F99001271781022 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = osc;
+			productName = osc;
+			productReference = 36C5517371E6001271781022 /* libosc.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "osc" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 659323CE60BC001271781022 /* osc */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				424F579261DF001271781022 /* libosc.a */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4D330DA00E13001271781022 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		422E087D5E67001271781022 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07555F6C6D10001271781022 /* OscObject.cpp in Sources */,
+				2B752280286D001271781022 /* OscReceiver.cpp in Sources */,
+				7B3E490222C6001271781022 /* OscSender.cpp in Sources */,
+				12F1248A609B001271781022 /* OscTypes.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		100C07976D67001271781022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "osc";
+			};
+			name = "Debug";
+		};
+		157C12722220001271781022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				CONFIGURATION_BUILD_DIR = ../lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "osc";
+			};
+			name = "Release";
+		};
+		1DDF4C571046001271781022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../../../../../../opt/local/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../../../../../../opt/local/lib",
+				);
+				OBJROOT = "../obj/Debug/osc";
+				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = NO;
+				SYMROOT = "../lib";
+			};
+			name = "Debug";
+		};
+		00F764AE15E4001271781022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../../../../../../opt/local/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../../../../../../opt/local/lib",
+				);
+				OBJROOT = "../obj/Release/osc";
+				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = NO;
+				SYMROOT = "../lib";
+			};
+			name = "Release";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		68DD34ED70E1001271781022 /* Build configuration list for PBXNativeTarget "libosc.a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				100C07976D67001271781022 /* Debug */,
+				157C12722220001271781022 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug";
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "osc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DDF4C571046001271781022 /* Debug */,
+				00F764AE15E4001271781022 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug";
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

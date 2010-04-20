@@ -15,7 +15,7 @@
 
 @SET_MAKE@
 
-# oscframework
+# osc
 
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
@@ -34,7 +34,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = src/oscframework
+subdir = src/osc
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -48,11 +48,11 @@ CONFIG_CLEAN_VPATH_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 AR = ar
 ARFLAGS = cru
-liboscframework_a_AR = $(AR) $(ARFLAGS)
-liboscframework_a_LIBADD =
-dist_liboscframework_a_OBJECTS = OscReceiver.$(OBJEXT) \
-	OscObject.$(OBJEXT) OscSender.$(OBJEXT) OscTypes.$(OBJEXT)
-liboscframework_a_OBJECTS = $(dist_liboscframework_a_OBJECTS)
+libosc_a_AR = $(AR) $(ARFLAGS)
+libosc_a_LIBADD =
+dist_libosc_a_OBJECTS = OscReceiver.$(OBJEXT) OscObject.$(OBJEXT) \
+	OscSender.$(OBJEXT) OscTypes.$(OBJEXT)
+libosc_a_OBJECTS = $(dist_libosc_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -66,8 +66,8 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(dist_liboscframework_a_SOURCES)
-DIST_SOURCES = $(dist_liboscframework_a_SOURCES)
+SOURCES = $(dist_libosc_a_SOURCES)
+DIST_SOURCES = $(dist_libosc_a_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -168,12 +168,12 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
 # the library to build, dont install just link to execs
-noinst_LIBRARIES = liboscframework.a
+noinst_LIBRARIES = libosc.a
 
 # libs sources, headers here because we dont want to install them
-dist_liboscframework_a_SOURCES = \
+dist_libosc_a_SOURCES = \
 		config.h Log.h Exception.h \
-        oscframework.h \
+        osc.h \
 		OscReceiver.h OscReceiver.cpp \
 		OscObject.h OscObject.cpp \
 		OscSender.h OscSender.cpp \
@@ -199,9 +199,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/oscframework/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/osc/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/oscframework/Makefile
+	  $(AUTOMAKE) --foreign src/osc/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -229,7 +229,7 @@ config.h: stamp-h1
 
 stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
 	@rm -f stamp-h1
-	cd $(top_builddir) && $(SHELL) ./config.status src/oscframework/config.h
+	cd $(top_builddir) && $(SHELL) ./config.status src/osc/config.h
 $(srcdir)/config.h.in:  $(am__configure_deps) 
 	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
 	rm -f stamp-h1
@@ -240,10 +240,10 @@ distclean-hdr:
 
 clean-noinstLIBRARIES:
 	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-liboscframework.a: $(liboscframework_a_OBJECTS) $(liboscframework_a_DEPENDENCIES) 
-	-rm -f liboscframework.a
-	$(liboscframework_a_AR) liboscframework.a $(liboscframework_a_OBJECTS) $(liboscframework_a_LIBADD)
-	$(RANLIB) liboscframework.a
+libosc.a: $(libosc_a_OBJECTS) $(libosc_a_DEPENDENCIES) 
+	-rm -f libosc.a
+	$(libosc_a_AR) libosc.a $(libosc_a_OBJECTS) $(libosc_a_LIBADD)
+	$(RANLIB) libosc.a
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

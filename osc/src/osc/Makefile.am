@@ -1,12 +1,12 @@
-# oscframework
+# osc
 
 # the library to build, dont install just link to execs
-noinst_LIBRARIES = liboscframework.a
+noinst_LIBRARIES = libosc.a
 
 # libs sources, headers here because we dont want to install them
-dist_liboscframework_a_SOURCES = \
+dist_libosc_a_SOURCES = \
 		config.h Log.h Exception.h \
-        oscframework.h \
+        osc.h \
 		OscReceiver.h OscReceiver.cpp \
 		OscObject.h OscObject.cpp \
 		OscSender.h OscSender.cpp \

@@ -7,16 +7,16 @@ example: http://opende.svn.sourceforge.net/viewvc/opende/trunk/build/premake4.lu
 http://bitbucket.org/anders/lightweight/src/tip/premake4.lua
 
 ]]
-solution "oscframework"
+solution "osc"
 	configurations { "Debug", "Release" }
 	objdir "../obj"
  
 -- oscframework library
-project "oscframework"
+project "osc"
 	kind "StaticLib"
 	language "C++"
 	targetdir "../lib"
-	files { "../src/oscframework/**.h", "../src/oscframework/**.cpp" }
+	files { "../src/osc/**.h", "../src/osc/**.cpp" }
 	
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags liblo`" }
@@ -41,10 +41,10 @@ project "oftests"
 	kind "ConsoleApp"
 	language "C++"
 	targetdir "../bin"
-	files { "../src/tests/**.h", "../src/tests/**.cpp" }
+	files { "../src/test/**.h", "../src/test/**.cpp" }
 
 	includedirs { "../src" }
-	links { "oscframework" }
+	links { "osc" }
 
 	configuration "linux"
 		buildoptions { "`pkg-config --cflags liblo`" }

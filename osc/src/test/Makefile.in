@@ -15,7 +15,7 @@
 
 @SET_MAKE@
 
-# oscframework tests
+# osc tests
 
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
@@ -34,24 +34,24 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-noinst_PROGRAMS = oftests$(EXEEXT)
-subdir = src/tests
+noinst_PROGRAMS = oftest$(EXEEXT)
+subdir = src/test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/src/oscframework/config.h
+CONFIG_HEADER = $(top_builddir)/src/osc/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_oftests_OBJECTS = oftests-Main.$(OBJEXT)
-oftests_OBJECTS = $(am_oftests_OBJECTS)
-oftests_DEPENDENCIES =
-oftests_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(oftests_LDFLAGS) \
+am_oftest_OBJECTS = oftest-Main.$(OBJEXT)
+oftest_OBJECTS = $(am_oftest_OBJECTS)
+oftest_DEPENDENCIES =
+oftest_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(oftest_LDFLAGS) \
 	$(LDFLAGS) -o $@
-DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/src/oscframework
+DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/src/osc
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
@@ -60,8 +60,8 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
-SOURCES = $(oftests_SOURCES)
-DIST_SOURCES = $(oftests_SOURCES)
+SOURCES = $(oftest_SOURCES)
+DIST_SOURCES = $(oftest_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -162,18 +162,18 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 
 # bin sources, headers here because we dont want to install them
-oftests_SOURCES = Main.cpp
+oftest_SOURCES = Main.cpp
 
 # local libraries needed to build (builddir)
-oftests_LDADD = -L../oscframework -loscframework
+oftest_LDADD = -L../osc -losc
 
 # include paths
-oftests_CPPFLAGS = $(CXXFLAGS) \
+oftest_CPPFLAGS = $(CXXFLAGS) \
         $(LO_CFLAGS) -I$(top_srcdir)/src
 
 
 # libs to link
-oftests_LDFLAGS = $(LO_LIBS)
+oftest_LDFLAGS = $(LO_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -187,9 +187,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/tests/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/test/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/tests/Makefile
+	  $(AUTOMAKE) --foreign src/test/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -211,9 +211,9 @@ $(am__aclocal_m4_deps):
 
 clean-noinstPROGRAMS:
 	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
-oftests$(EXEEXT): $(oftests_OBJECTS) $(oftests_DEPENDENCIES) 
-	@rm -f oftests$(EXEEXT)
-	$(oftests_LINK) $(oftests_OBJECTS) $(oftests_LDADD) $(LIBS)
+oftest$(EXEEXT): $(oftest_OBJECTS) $(oftest_DEPENDENCIES) 
+	@rm -f oftest$(EXEEXT)
+	$(oftest_LINK) $(oftest_OBJECTS) $(oftest_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -221,7 +221,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/oftests-Main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/oftest-Main.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -237,19 +237,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-oftests-Main.o: Main.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftests_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT oftests-Main.o -MD -MP -MF $(DEPDIR)/oftests-Main.Tpo -c -o oftests-Main.o `test -f 'Main.cpp' || echo '$(srcdir)/'`Main.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/oftests-Main.Tpo $(DEPDIR)/oftests-Main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='Main.cpp' object='oftests-Main.o' libtool=no @AMDEPBACKSLASH@
+oftest-Main.o: Main.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT oftest-Main.o -MD -MP -MF $(DEPDIR)/oftest-Main.Tpo -c -o oftest-Main.o `test -f 'Main.cpp' || echo '$(srcdir)/'`Main.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/oftest-Main.Tpo $(DEPDIR)/oftest-Main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='Main.cpp' object='oftest-Main.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftests_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o oftests-Main.o `test -f 'Main.cpp' || echo '$(srcdir)/'`Main.cpp
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o oftest-Main.o `test -f 'Main.cpp' || echo '$(srcdir)/'`Main.cpp
 
-oftests-Main.obj: Main.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftests_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT oftests-Main.obj -MD -MP -MF $(DEPDIR)/oftests-Main.Tpo -c -o oftests-Main.obj `if test -f 'Main.cpp'; then $(CYGPATH_W) 'Main.cpp'; else $(CYGPATH_W) '$(srcdir)/Main.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/oftests-Main.Tpo $(DEPDIR)/oftests-Main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='Main.cpp' object='oftests-Main.obj' libtool=no @AMDEPBACKSLASH@
+oftest-Main.obj: Main.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT oftest-Main.obj -MD -MP -MF $(DEPDIR)/oftest-Main.Tpo -c -o oftest-Main.obj `if test -f 'Main.cpp'; then $(CYGPATH_W) 'Main.cpp'; else $(CYGPATH_W) '$(srcdir)/Main.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/oftest-Main.Tpo $(DEPDIR)/oftest-Main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='Main.cpp' object='oftest-Main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftests_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o oftests-Main.obj `if test -f 'Main.cpp'; then $(CYGPATH_W) 'Main.cpp'; else $(CYGPATH_W) '$(srcdir)/Main.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(oftest_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o oftest-Main.obj `if test -f 'Main.cpp'; then $(CYGPATH_W) 'Main.cpp'; else $(CYGPATH_W) '$(srcdir)/Main.cpp'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

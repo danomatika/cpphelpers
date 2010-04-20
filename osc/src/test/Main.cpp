@@ -1,5 +1,5 @@
 
-#include <oscframework/oscframework.h>
+#include <osc/osc.h>
 #include <iostream>
 
 using namespace std;
@@ -109,12 +109,14 @@ int main(int argc, char *argv[])
 void testTimeTag()
 {
 	TimeTag tagA;
+    tagA.now(); // record the current timestamp
     cout << "tagA is " << tagA.sec << " " << tagA.frac << endl;
 
 	cout << "sleeping 5 seconds ..." << endl;
 	sleep(5);
 
 	TimeTag tagB;
+    tagB.now(); // record the current timestamp
     cout << "tagB is " << tagB.sec << " " << tagB.frac << endl;
 
 	// check difference (sleep is not so accurate, so difference will be ~ 5 secs)

@@ -1,18 +1,18 @@
-# oscframework tests
+# osc tests
 
 # programs to build
-noinst_PROGRAMS = oftests
+noinst_PROGRAMS = oftest
 
 # bin sources, headers here because we dont want to install them
-oftests_SOURCES = Main.cpp
+oftest_SOURCES = Main.cpp
 
 # local libraries needed to build (builddir)
-oftests_LDADD = -L../oscframework -loscframework
+oftest_LDADD = -L../osc -losc
 
 # include paths
-oftests_CPPFLAGS = $(CXXFLAGS) \
+oftest_CPPFLAGS = $(CXXFLAGS) \
         $(LO_CFLAGS) -I$(top_srcdir)/src
 
 # libs to link
-oftests_LDFLAGS = $(LO_LIBS)
+oftest_LDFLAGS = $(LO_LIBS)
 

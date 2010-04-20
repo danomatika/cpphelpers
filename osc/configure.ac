@@ -1,8 +1,8 @@
 #########################################
 ##### Prelude #####
 
-AC_INIT([oscframework], [0.1.0], [danomatika@gmail.com])
-AC_CONFIG_SRCDIR([src/oscframework/oscframework.h])
+AC_INIT([osc], [0.1.0], [danomatika@gmail.com])
+AC_CONFIG_SRCDIR([src/osc/osc.h])
 AC_CONFIG_AUX_DIR([config])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -59,12 +59,12 @@ AC_CONFIG_SUBDIRS([])
 #########################################
 ##### Output files #####
 
-AC_CONFIG_HEADERS([src/oscframework/config.h])
+AC_CONFIG_HEADERS([src/osc/config.h])
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
-	src/oscframework/Makefile
-	src/tests/Makefile
+	src/osc/Makefile
+	src/test/Makefile
 ])
 AC_OUTPUT
 

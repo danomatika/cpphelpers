@@ -1,4 +1,4 @@
-/* src/oscframework/config.h.in.  Generated from configure.ac by autoheader.  */
+/* src/osc/config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Debug Mode */
 #undef DEBUG
