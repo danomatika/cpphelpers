@@ -1,0 +1,290 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		264A5747192B001271356218 /* liboscframework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E372B396642001271356218 /* liboscframework.a */; };
+		746B4D390910001271356218 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C455D7C30001271356218 /* Main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		09346602202B001271356218 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 564834B430C6001271356218 /* oscframework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D365CF57C47001271356218;
+			remoteInfo = liboscframework.a;
+		};
+		189C6461296C001271356218 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 564834B430C6001271356218 /* oscframework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 530A3FBA675B001271356218;
+			remoteInfo = liboscframework.a;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		267C25705F81001271356218 /* oftests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = oftests; sourceTree = BUILT_PRODUCTS_DIR; };
+		564834B430C6001271356218 /* oscframework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = oscframework.xcodeproj; sourceTree = SOURCE_ROOT; };
+		6B8C455D7C30001271356218 /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		517C4DD3101E001271356218 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				264A5747192B001271356218 /* liboscframework.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1E6F2A3B08F2001271356218 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E372B396642001271356218 /* liboscframework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		244670664CE8001271356218 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				267C25705F81001271356218 /* oftests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		31601F370F6B001271356218 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				564834B430C6001271356218 /* oscframework.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		3DEB1716276F001271356218 /* oftests */ = {
+			isa = PBXGroup;
+			children = (
+				76885EBC2080001271356218 /* src */,
+				244670664CE8001271356218 /* Products */,
+				31601F370F6B001271356218 /* Projects */,
+			);
+			name = oftests;
+			sourceTree = "<group>";
+		};
+		4F3965E816C9001271356218 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				6B8C455D7C30001271356218 /* Main.cpp */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
+		76885EBC2080001271356218 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				4F3965E816C9001271356218 /* tests */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1EBB397D6B8A001271356218 /* oftests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 75B613054075001271356218 /* Build configuration list for PBXNativeTarget "oftests" */;
+			buildPhases = (
+				02302023675A001271356218 /* Resources */,
+				03A34F3A2133001271356218 /* Sources */,
+				517C4DD3101E001271356218 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7AA834242B58001271356218 /* PBXTargetDependency */,
+			);
+			name = oftests;
+			productInstallPath = "$(HOME)/bin";
+			productName = oftests;
+			productReference = 267C25705F81001271356218 /* oftests */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "oftests" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 3DEB1716276F001271356218 /* oftests */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1E6F2A3B08F2001271356218 /* Products */;
+					ProjectRef = 564834B430C6001271356218 /* oscframework.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				1EBB397D6B8A001271356218 /* oftests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3E372B396642001271356218 /* liboscframework.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liboscframework.a;
+			remoteRef = 09346602202B001271356218 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		02302023675A001271356218 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03A34F3A2133001271356218 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				746B4D390910001271356218 /* Main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7AA834242B58001271356218 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = liboscframework.a;
+			targetProxy = 189C6461296C001271356218 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0C9C07414518001271356218 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../bin;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = oftests;
+			};
+			name = Debug;
+		};
+		1B6332C1539D001271356218 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../bin;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = oftests;
+			};
+			name = Release;
+		};
+		5E0D4A990FED001271356218 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../../../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = ../../../../../../../opt/local/lib;
+				OBJROOT = ../obj/Debug/oftests;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-llo",
+					"-lpthread",
+				);
+				PREBINDING = NO;
+				SYMROOT = ../bin;
+			};
+			name = Debug;
+		};
+		6F60287752E2001271356218 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					../../../../../../../opt/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = ../../../../../../../opt/local/lib;
+				OBJROOT = ../obj/Release/oftests;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-llo",
+					"-lpthread",
+				);
+				PREBINDING = NO;
+				SYMROOT = ../bin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "oftests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E0D4A990FED001271356218 /* Debug */,
+				6F60287752E2001271356218 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		75B613054075001271356218 /* Build configuration list for PBXNativeTarget "oftests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C9C07414518001271356218 /* Debug */,
+				1B6332C1539D001271356218 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
