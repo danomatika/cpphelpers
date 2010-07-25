@@ -1,0 +1,4 @@
+#!/bin/bash
+
+svn export --force http://svn.danomatika.com/common/trunk/$1/src/$1 $1
+
