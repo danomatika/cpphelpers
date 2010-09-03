@@ -28,10 +28,12 @@ project "projectLib"
 	libdirs {  }
 	
 	configuration "linux"
+		defines { "LINUX" }
 		buildoptions { "`pkg-config --cflags sdl`" }
 		linkoptions { "`pkg-config --libs sdl`" }
 	
 	configuration "macosx"
+		defines { "MACOSX" }
 		-- get rid of visibilty warnings
 		buildoptions { "-fvisibility-inlines-hidden" }
 		-- MacPorts
@@ -62,10 +64,12 @@ project "projectProgram"
 	links { "projectLib" }
 
 	configuration "linux"
+		defines { "LINUX" }
 		buildoptions { "`pkg-config --cflags sdl`" }
 		linkoptions { "`pkg-config --libs sdl`" }
 
 	configuration "macosx"
+		defines { "MACOSX" }
 		-- MacPorts
 		includedirs { "/opt/local/include"}
 		libdirs { "/opt/local/lib" }
