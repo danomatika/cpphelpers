@@ -1,0 +1,17 @@
+#! /bin/bash
+#
+# update the sources for an external from danomatika.com common
+#
+
+if [ "$1" == "visualframework" ]; then
+	svn export --force http://svn.danomatika.com/common/trunk/visualframework/src/visualframework/ visualframework
+elif [ "$1" == "oscframework" ]; then
+	svn export --force http://svn.danomatika.com/common/trunk/oscframework/src/oscframework/ oscframework
+elif [ "$1" == "xmlframework" ]; then
+	svn export --force http://svn.danomatika.com/common/trunk/xmlframework/src/xmlframework/ xmlframework
+elif [ "$1" == "tclap" ]; then
+	svn export --force http://svn.danomatika.com/common/trunk/headers/tclap/ tclap
+else
+	echo "unknown framework $1"
+fi
+
