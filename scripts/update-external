@@ -1,16 +1,39 @@
 #! /bin/bash
 #
-# update the sources for an external from danomatika.com common
+# update the sources for an external from github.com/danomatika.com
 #
 
+WD=$(dirname $0)
+
+###
+
+cd $WD
+
 if [ "$1" == "visualframework" ]; then
-	svn export --force http://svn.danomatika.com/common/trunk/visualframework/src/visualframework/ visualframework
+	mkdir -p visualframework
+ 	git clone git://github.com/danomatika/visualframework.git git-visualframework
+	cp -Rv git-visualframework/src/visualframework/* visualframework
+	rm -rf git-visualframework
 elif [ "$1" == "oscframework" ]; then
-	svn export --force http://svn.danomatika.com/common/trunk/oscframework/src/oscframework/ oscframework
+	mkdir -p oscframework
+	git clone git://github.com/danomatika/oscframework.git git-oscframework
+	cp -Rv git-oscframework/src/oscframework/* oscframework
+	rm -rf git-oscframework
 elif [ "$1" == "xmlframework" ]; then
-	svn export --force http://svn.danomatika.com/common/trunk/xmlframework/src/xmlframework/ xmlframework
+	mkdir -p xmlframework
+	git clone git://github.com/danomatika/xmlframework.git git-xmlframework
+	cp -R git-xmlframework/src/xmlframework/* xmlframework
+	rm -rf git-xmlframework
 elif [ "$1" == "tclap" ]; then
-	svn export --force http://svn.danomatika.com/common/trunk/headers/tclap/ tclap
+	mkdir -p tclap
+	git clone git://github.com/danomatika/common.git common
+	cp -R common/tclap/* tclap
+	rm -rf common
+elif [ "$1" == "tclap" ]; then
+	mkdir -p vmmlib
+	git clone git://github.com/danomatika/common.git common
+	cp -R common/vmmlib/* vmmlib
+	rm -rf common
 else
 	echo "unknown framework $1"
 fi
