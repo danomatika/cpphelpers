@@ -46,4 +46,3 @@ elif [ "$1" == "tclap" ]; then
 else
 	echo "unknown framework $1"
 fi
-

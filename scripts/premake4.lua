@@ -89,4 +89,3 @@ project "projectProgram"
 	configuration "Release"
 		defines { "NDEBUG" }
 		flags { "Optimize" }
-		
