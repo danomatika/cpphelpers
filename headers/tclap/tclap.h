@@ -156,7 +156,7 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 		{
         	bPrintCommands = true;
             
-            // commands are prneted differently
+            // commands are printed differently
             if((*it)->shortID().length() > longestIdLen)
             {
             	longestIdLen = (*it)->shortID().length();
@@ -176,7 +176,7 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	for(int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++)
 	{
 		for(ArgVectorIterator it = xorList[i].begin();
-        	it != xorList[i].end(); it++)
+        	it != xorList[i].end(); ++it)
 		{
             printLine(os, makeLongID((*it)),
                       (*it)->getDescription(), 2, longestIdLen);
@@ -192,11 +192,11 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	}
     
 	// rest of the args
-	for(ArgListIterator it = argList.begin(); it != argList.end(); it++)
+	for(ArgListIterator it = argList.begin(); it != argList.end();)
     {
     	if((*it)->getName() == "help") // remove help (we printed it manually earlier)
         {
-        	argList.remove((*it));
+        	it = argList.erase(it);
         }
         else if((*it)->shortID().at(0) != '<') // ignore commands which begin with '<'
 		{
@@ -204,7 +204,11 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
             		  (*it)->getDescription(), 2, longestIdLen);
                       
             // remove arg from cmd list
-            argList.remove((*it));
+            it = argList.erase(it);
+		}
+		else
+		{
+			++it;
 		}
 	}
     os << std::endl;
