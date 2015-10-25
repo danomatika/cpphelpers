@@ -164,13 +164,8 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 		}
 	}
 
-	// help
-	spacePrint(os, "Help Options:", 80, 0, 0);
-	printLine(os, "-h, --help", "Show help options", 2, longestIdLen);
-	os << std::endl;
-
 	// begin options
-	spacePrint(os, "Application Options:", 80, 0, 0);
+	spacePrint(os, "Options:", 80, 0, 0);
 
 	// xor args first
 	for(int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++)
@@ -194,11 +189,7 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	// rest of the args
 	for(ArgListIterator it = argList.begin(); it != argList.end();)
 	{
-		if((*it)->getName() == "help") // remove help (we printed it manually earlier)
-		{
-			it = argList.erase(it);
-		}
-		else if((*it)->shortID().at(0) != '<') // ignore commands which begin with '<'
+		if((*it)->shortID().at(0) != '<') // ignore commands which begin with '<'
 		{
 			printLine(os, makeLongID((*it)),
 					  (*it)->getDescription(), 2, longestIdLen);
@@ -216,8 +207,7 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	// commands are the only thing left now
 	if(bPrintCommands)
 	{
-		spacePrint(os, "Application Commands: (in order)", 80, 0, 0);
-		
+		spacePrint(os, "Commands: (in order)", 80, 0, 0);
 		for(ArgListIterator it = argList.begin(); it != argList.end(); it++)
 		{ 
 			printLine(os, (*it)->shortID(),
