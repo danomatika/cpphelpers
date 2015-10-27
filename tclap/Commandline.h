@@ -1,16 +1,32 @@
 /*==============================================================================
-	Dan Wilcox <danomatika@gmail.com>, 2009, 2010
+
+	tclap.h
+  
+	Copyright (C) 2009, 2010 Dan Wilcox <danomatika@gmail.com>
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 ==============================================================================*/
-#ifndef TCLAP_H
-#define TCLAP_H
+#pragma once
 
 #include <tclap/CmdLine.h>
 
 namespace TCLAP {
 
-// custom output class to print usage the way I want it aka like goptions
-class Output : public StdOutput
-{
+/// custom output class to print usage the way I want it aka like goptions
+class Output : public StdOutput {
+
 	public:
 
 		/**
@@ -18,13 +34,12 @@ class Output : public StdOutput
 		 * produce alternative behavior.
 		 * \param c - The CmdLine object the output is generated for.
 		 */
-		virtual void usage(CmdLineInterface& c)
-		{
+		virtual void usage(CmdLineInterface& c) {
 			shortUsage(c, std::cout);
 			std::cout << std::endl;
 			
 			spacePrint(std::cout, c.getProgramName()+": "+c.getMessage(), 80, 2,
-					   c.getProgramName().length()+2);
+			           c.getProgramName().length()+2);
 			std::cout << std::endl;
 			
 			longUsage(c, std::cout);
@@ -65,12 +80,12 @@ class Output : public StdOutput
 		 * 						 line of text.
 		 */
 		void printLine(std::ostream& os, std::string first, std::string second,
-					   int indent, int secondIndent) const;
+		               int indent, int secondIndent) const;
 };
 
 // TCLAP CmdLine wrapper to add custon Output class
-class CommandLine : public CmdLine
-{
+class CommandLine : public CmdLine {
+
 	public:
 
 		/**
@@ -86,7 +101,7 @@ class CommandLine : public CmdLine
 		 * Version switches. Defaults to true.
 		 */
 		CommandLine(const std::string& message,
-					const std::string& version = "none")
+			        const std::string& version = "none")
 			: CmdLine(message, ' ', version, true)
 			{this->setOutput(&output);}
 
@@ -96,8 +111,7 @@ class CommandLine : public CmdLine
 		Output output;
 };
 
-inline void Output::shortUsage(CmdLineInterface& _cmd, std::ostream& os) const
-{
+inline void Output::shortUsage(CmdLineInterface& _cmd, std::ostream& os) const {
 	std::list<Arg*> argList = _cmd.getArgList();
 	std::string progName = _cmd.getProgramName();
 	XorHandler xorHandler = _cmd.getXorHandler();
@@ -107,22 +121,18 @@ inline void Output::shortUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	int secondLineOffset = s.length() + 1;
  
 	// first the xor
-	for(int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++)
-	{
+	for(int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++) {
 		s += " {";
 		for(ArgVectorIterator it = xorList[i].begin();
-			it != xorList[i].end(); it++)
-		{
+			it != xorList[i].end(); it++) {
 			s += (*it)->shortID() + "|";
 		}
 		s[s.length()-1] = '}';
 	}
 
 	// then the rest
-	for(ArgListIterator it = argList.begin(); it != argList.end(); it++)
-	{
-		if(!xorHandler.contains((*it)) )// && (*it)->getName() != "")
-		{
+	for(ArgListIterator it = argList.begin(); it != argList.end(); it++) {
+		if(!xorHandler.contains((*it))) { // && (*it)->getName() != "")
 			s += " " + (*it)->shortID();
 		}
 	}
@@ -130,8 +140,7 @@ inline void Output::shortUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	spacePrint(os, s, 80, 0, secondLineOffset);
 }
 
-inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
-{
+inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const {
 	std::list<Arg*> argList = _cmd.getArgList();
 	std::string message = _cmd.getMessage();
 	XorHandler xorHandler = _cmd.getXorHandler();
@@ -142,23 +151,19 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	bool bPrintCommands = false;
 
 	// find the longest id length to use it as the right margin
-	for(ArgListIterator it = argList.begin(); it != argList.end(); it++)
-	{
+	for(ArgListIterator it = argList.begin(); it != argList.end(); it++) {
 		msg = makeLongID((*it));
-			if(msg.length() > longestIdLen)
-		{
+			if(msg.length() > longestIdLen) {
 			longestIdLen = msg.length();
 		}
 		
 		// is this a command?
 		if(!xorHandler.contains((*it)) && (*it)->getFlag() == "" &&
-		  ((*it)->getName() != "help" && (*it)->getName() != "version"))
-		{
+		  ((*it)->getName() != "help" && (*it)->getName() != "version")) {
 			bPrintCommands = true;
 			
 			// commands are printed differently
-			if((*it)->shortID().length() > longestIdLen)
-			{
+			if((*it)->shortID().length() > longestIdLen) {
 				longestIdLen = (*it)->shortID().length();
 			}
 		}
@@ -168,70 +173,53 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const
 	spacePrint(os, "Options:", 80, 0, 0);
 
 	// xor args first
-	for(int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++)
-	{
+	for(int i = 0; static_cast<unsigned int>(i) < xorList.size(); i++) {
 		for(ArgVectorIterator it = xorList[i].begin();
-			it != xorList[i].end(); ++it)
-		{
+			it != xorList[i].end(); ++it) {
 			printLine(os, makeLongID((*it)),
-					  (*it)->getDescription(), 2, longestIdLen);
-			if(it+1 != xorList[i].end())
-			{
+			          (*it)->getDescription(), 2, longestIdLen);
+			if(it+1 != xorList[i].end()) {
 				printLine(os, "", "-- OR --", 3, longestIdLen);
 			}
-			
-			// remove arg from cmd list
-			argList.remove((*it));
+			argList.remove((*it)); // remove arg from cmd list
 		}
 		os << std::endl;
 	}
 	
 	// rest of the args
-	for(ArgListIterator it = argList.begin(); it != argList.end();)
-	{
-		if((*it)->shortID().at(0) != '<') // ignore commands which begin with '<'
-		{
+	for(ArgListIterator it = argList.begin(); it != argList.end();) {
+		if((*it)->shortID().at(0) != '<') { // ignore commands which begin with '<'
 			printLine(os, makeLongID((*it)),
-					  (*it)->getDescription(), 2, longestIdLen);
-					  
-			// remove arg from cmd list
-			it = argList.erase(it);
+			          (*it)->getDescription(), 2, longestIdLen);
+			it = argList.erase(it); // remove arg from cmd list
 		}
-		else
-		{
+		else {
 			++it;
 		}
 	}
 	os << std::endl;
 	
 	// commands are the only thing left now
-	if(bPrintCommands)
-	{
+	if(bPrintCommands) {
 		spacePrint(os, "Commands: (in order)", 80, 0, 0);
-		for(ArgListIterator it = argList.begin(); it != argList.end(); it++)
-		{ 
+		for(ArgListIterator it = argList.begin(); it != argList.end(); it++) { 
 			printLine(os, (*it)->shortID(),
-					(*it)->getDescription(), 2, longestIdLen);
+			          (*it)->getDescription(), 2, longestIdLen);
 		}
 	}
 }
 
-inline std::string Output::makeLongID(Arg* arg) const
-{
+inline std::string Output::makeLongID(Arg* arg) const {
 	std::string id = "";
 	
-	if(arg->getFlag() != "")
-	{
+	if(arg->getFlag() != "") {
 		id += "-" + arg->getFlag();
-		
-		if(arg->getName() != "")
-		{
+		if(arg->getName() != "") {
 			id += ", ";
 		}
 	}
 	
-	if (arg->getName() != "")
-	{
+	if (arg->getName() != "") {
 		id += "--" + arg->getName();
 	}
 	
@@ -239,19 +227,16 @@ inline std::string Output::makeLongID(Arg* arg) const
 }
 
 inline void Output::printLine(std::ostream& os, std::string first,
-												std::string second,
-												int indent,
-												int secondIndent) const
-{
+                                                std::string second,
+                                                int indent,
+                                                int secondIndent) const {
 	std::string line = first + "    ";
 	int padLimit = secondIndent - line.length() + 4 + indent;
-	for(int i = 0; i < padLimit; ++i)
+	for(int i = 0; i < padLimit; ++i) {
 		line += ' ';
-		
+	}
 	line += second;
 	spacePrint(os, line, 80, indent, secondIndent + 4 + indent);
 }
 
 } // namespace
-
-#endif // TCLAP_H
