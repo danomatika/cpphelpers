@@ -78,13 +78,13 @@ class Log {
 		}
 
 		/// catch << with a template class to read any type of data
-		template <class T> Log& operator<<(const T& value) {
+		template <class T> Log& operator<<(const T &value) {
 			m_line << value;
 			return *this;
 		}
 
 		/// catch << ostream function pointers such as std::endl and std::hex
-		Log& operator<<(std::ostream& (*func)(std::ostream&)) {
+		Log& operator<<(std::ostream &(*func)(std::ostream&)) {
 			func(m_line);
 			return *this;
 		}
