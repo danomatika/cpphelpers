@@ -45,18 +45,18 @@
 ///
 ///     // parse, returns false on error or help/version prints
 ///     if(!options.parse(argc, argv)) {
-///		    return false;
+///         return false;
 ///     }
 ///
 ///     // load the config file (if one exists)
 ///     if(options.numArguments() > 0) {
-///		    std::cout << "Loading " << options.getArgumentString(0);
+///	        std::cout << "Loading " << options.getArgumentString(0);
 ///     }
 ///
 ///     // read option values if set
 ///     if(options.isSet("IP"))         {sendingIp = options.getString("IP");}
 ///     if(options.isSet("PORT"))       {sendingPort = options.getUInt("PORT");}
-///	    if(options.isSet("MULTICAST"))  {listeningMulticast = true;}
+///     if(options.isSet("MULTICAST"))  {listeningMulticast = true;}
 ///
 /// Example usage print:
 ///
@@ -373,7 +373,7 @@ class Options {
 			for(int i = 0; i < nonOptions.size(); ++i) {
 				NonOption &n = nonOptions[i];
 				std::cout << " " << (!n.required ? "[" : "")
-						  << n.name << (!n.required ? "]" : "");
+				          << n.name << (!n.required ? "]" : "");
 				if(i < nonOptions.size()-1) {
 					std::cout << " ";
 				}
@@ -464,7 +464,7 @@ class Options {
 		/// push descriptor struct, requires intermediate variable
 		void pushDescriptor(const unsigned int index, const int type,
 		                    const char* shortopt, const char *longopt,
-							const option::CheckArg check, const char* help) {
+		                    const option::CheckArg check, const char* help) {
 			struct option::Descriptor d = {index, type, shortopt, longopt, check, help};
 			descriptors.push_back(d);
 		}
