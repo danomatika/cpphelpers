@@ -3,11 +3,13 @@ cpp helpers
 
 Some cpp class helpers I use in a few projects:
 
-* Log: a streaming log class with settable levels
-* Path: cross-platform path string functions
+* Log.h: a streaming log class with settable levels
+* Path.h: cross-platform path string functions
+* Options.h: wrapper for The Lean Mean C++ Options Parser which allows for dynamic creation & type conversions
 * tclap/CommandLine: a custom tclap commandline that prints more like goptions
 
-Some useful libs:
+Some useful libs which are included:
 
-* [tclap](http://tclap.sourceforge.net): cross platform commandline parsing
+* [The Lean Mean C++ Options Parser](http://optionparser.sourceforge.net): cross-platform commandline argument parsing in a single header
+* [tclap](http://tclap.sourceforge.net): cross-platform commandline argument parsing
 
