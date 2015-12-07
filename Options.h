@@ -27,6 +27,8 @@
 /// \class Options
 /// \brief wrapper for The Lean Mean C++ Options Parser to allow dynamic creation & convenience type conversions
 ///
+/// See The Lean Mean C++ Options Parser docs for lower level details: http://optionparser.sourceforge.net
+///
 /// Example usage:
 ///
 ///     // create with optional program description and version strings
@@ -79,14 +81,14 @@ class Options {
 		/// version: optional version string, --version switch added if set
 		Options(std::string description="", std::string version="") : description(description), version(version), name("name") {
 			indices["UKNOWN"] = 0;
-			descriptors.push_back({0, 0, "" , "", Arg::Unknown, "Options:"});
+			pushDescriptor(0, 0, "", "", Arg::Unknown, "Options:");
 			indices["HELP"] = 1;
-			descriptors.push_back({1, 0, "h" , "help", Arg::None, "  -h, --help  \tPrint usage and exit"});
+			pushDescriptor(1, 0, "h" , "help", Arg::None, "  -h, --help  \tPrint usage and exit");
 			if(version != "") {
 				indices["VERSION"] = 2;
-				descriptors.push_back({2, 0, "" , "version", Arg::None, "  --version  \tPrint version and exit"});
+				pushDescriptor(2, 0, "" , "version", Arg::None, "  --version  \tPrint version and exit");
 			}
-			descriptors.push_back({0, 0, 0, 0, 0, 0}); // array terminator
+			pushEndDescriptor();
 			parser = NULL;
 			options = NULL;
 			buffer = NULL;
@@ -131,8 +133,8 @@ class Options {
 				return false;
 			}
 			if(options[indices["VERSION"]]) {
-				std::cout << name << " version " << version << std::endl;
-				return true;
+				std::cout << version << std::endl;
+				return false;
 			}
 			if(parser->nonOptionsCount() < numRequiredNonOptions) {
 				if(numRequiredNonOptions == 1) {
@@ -199,8 +201,8 @@ class Options {
 				indices[name] = index;
 			}
 			descriptors.pop_back();
-			descriptors.push_back({indices[name], 0, shortopt, longopt, checkArg, help});
-			descriptors.push_back({0, 0, 0, 0, 0, 0}); // array terminator
+			pushDescriptor(indices[name], 0, shortopt, longopt, checkArg, help);
+			pushEndDescriptor();
 		}
 	
 	/// \section Read Option Values
@@ -283,7 +285,8 @@ class Options {
 				addHelp("\nArguments:\n");
 			}
 			addHelp(help);
-			nonOptions.push_back({name, required});
+			struct NonOption arg = {name, required};
+			nonOptions.push_back(arg);
 			if(required) {
 				numRequiredNonOptions++;
 			}
@@ -382,7 +385,7 @@ class Options {
 	protected:
 	
 		/// option argument type checks
-		struct Arg: public option::Arg {
+		struct Arg : public option::Arg {
 
 			static option::ArgStatus Unknown(const option::Option& option, bool msg) {
 				if(msg) {
@@ -454,6 +457,20 @@ class Options {
 			const char *name; //< non-option argument name for printing
 			const bool required; //< is this non-option argument required?
 		};
+	
+		/// push descriptor struct, requires intermediate variable
+		void pushDescriptor(const unsigned int index, const int type,
+		                    const char* shortopt, const char *longopt,
+							const option::CheckArg check, const char* help) {
+			struct option::Descriptor d = {index, type, shortopt, longopt, check, help};
+			descriptors.push_back(d);
+		}
+	
+		/// push array terminator struct
+		void pushEndDescriptor() {
+			struct option::Descriptor end = {0, 0, NULL, NULL, 0, NULL};
+			descriptors.push_back(end);
+		}
 
 		std::string description; //< optional description line
 		std::string version; //< optional version string
