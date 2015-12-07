@@ -20,7 +20,10 @@
 ==============================================================================*/
 #pragma once
 
+#include <map>
+#include <vector>
 #include <string>
+#include <sstream>
 #include <iostream>
 #include "optionparser.h"
 
@@ -158,31 +161,31 @@ class Options {
 	
 		/// add an option which takes no value
 		/// note: strings must be const (literal) or option may not be added correctly
-		void addSwitch(string name, const char* shortopt, const char *longopt, const char *help) {
+		void addSwitch(std::string name, const char* shortopt, const char *longopt, const char *help) {
 			addOption(name, 0, shortopt, longopt, Arg::None, help);
 		}
 	
 		/// add an option which expects a string value, optionally allow empty values aka ""
 		/// note: strings must be const (literal) or option may not be added correctly
-		void addString(string name, const char* shortopt, const char *longopt, const char *help, bool allowEmpty=true) {
+		void addString(std::string name, const char* shortopt, const char *longopt, const char *help, bool allowEmpty=true) {
 			addOption(name, 0, shortopt, longopt, (allowEmpty ? Arg::Required : Arg::NonEmpty), help);
 		}
 	
 		/// add an option which expects a boolean value (0/1, yes/no, true/false)
 		/// note: strings must be const (literal) or option may not be added correctly
-		void addBool(string name, const char* shortopt, const char *longopt, const char *help) {
+		void addBool(std::string name, const char* shortopt, const char *longopt, const char *help) {
 			addOption(name, 0, shortopt, longopt, Arg::Bool, help);
 		}
 	
 		/// add an option which expects a numeric integer value (non-decimal)
 		/// note: strings must be const (literal) or option may not be added correctly
-		void addInteger(string name, const char* shortopt, const char *longopt, const char *help) {
+		void addInteger(std::string name, const char* shortopt, const char *longopt, const char *help) {
 			addOption(name, 0, shortopt, longopt, Arg::Integer, help);
 		}
 	
 		/// add an option which expects a numeric decimal value
 		/// note: strings must be const (literal) or option may not be added correctly
-		void addDecimal(string name, const char* shortopt, const char *longopt, const char *help) {
+		void addDecimal(std::string name, const char* shortopt, const char *longopt, const char *help) {
 			addOption(name, 0, shortopt, longopt, Arg::Decimal, help);
 		}
 	
@@ -194,7 +197,7 @@ class Options {
 	
 		/// add base TLMC++OP option (lower level)
 		/// note: strings must be const or option may not be added correctly
-		void addOption(string name, const int type, const char *shortopt, const char *longopt, const option::CheckArg checkArg, const char *help) {
+		void addOption(std::string name, const int type, const char *shortopt, const char *longopt, const option::CheckArg checkArg, const char *help) {
 			std::map<std::string,unsigned int>::iterator iter = indices.find(name);
 			if(iter == indices.end()) {
 				unsigned int index = descriptors.size()-1;
@@ -217,7 +220,7 @@ class Options {
 		/// boolean values are 1/0, yes/no, true/false
 		/// note: does not check index bounds
 		bool getBool(std::string name) {
-			string arg = options[indices[name]].last()->arg;
+			std::string arg = options[indices[name]].last()->arg;
 			if(arg == "1" || arg == "yes" || arg == "true") {
 				return true;
 			}
@@ -228,7 +231,7 @@ class Options {
 		/// note: does not check index bounds
 		int getInt(std::string name) {
 			int i = 0;
-			istringstream stream(options[indices[name]].last()->arg);
+			std::istringstream stream(options[indices[name]].last()->arg);
 			stream >> i;
 			return i;
 		}
@@ -237,7 +240,7 @@ class Options {
 		/// note: does not check index bounds
 		unsigned int getUInt(std::string name) {
 			unsigned int ui = 0;
-			istringstream stream(options[indices[name]].last()->arg);
+			std::istringstream stream(options[indices[name]].last()->arg);
 			stream >> ui;
 			return ui;
 		}
@@ -246,7 +249,7 @@ class Options {
 		/// note: does not check index bounds
 		float getFloat(std::string name) {
 			float f = 0.f;
-			istringstream stream(options[indices[name]].last()->arg);
+			std::istringstream stream(options[indices[name]].last()->arg);
 			stream >> f;
 			return f;
 		}
@@ -255,7 +258,7 @@ class Options {
 		/// note: does not check index bounds
 		double getDouble(std::string name) {
 			double d = 0.0;
-			istringstream stream(options[indices[name]].last()->arg);
+			std::istringstream stream(options[indices[name]].last()->arg);
 			stream >> d;
 			return d;
 		}
@@ -301,7 +304,7 @@ class Options {
 		/// boolean values are 1/0, yes/no, true/false
 		/// note: does not check index bounds
 		int getArgumentBool(unsigned int index) {
-			string arg = parser->nonOption(index);
+			std::string arg = parser->nonOption(index);
 			if(arg == "1" || arg == "yes" || arg == "true") {
 				return true;
 			}
@@ -312,7 +315,7 @@ class Options {
 		/// note: does not check index bounds
 		int getArgumentInt(unsigned int index) {
 			int i = 0;
-			istringstream stream(parser->nonOption(index));
+			std::istringstream stream(parser->nonOption(index));
 			stream >> i;
 			return i;
 		}
@@ -321,7 +324,7 @@ class Options {
 		/// note: does not check index bounds
 		unsigned int getArgumentUInt(unsigned int index) {
 			unsigned int ui = 0;
-			istringstream stream(parser->nonOption(index));
+			std::istringstream stream(parser->nonOption(index));
 			stream >> ui;
 			return ui;
 		}
@@ -330,7 +333,7 @@ class Options {
 		/// note: does not check index bounds
 		float getArgumentFloat(unsigned int index) {
 			float f = 0.f;
-			istringstream stream(parser->nonOption(index));
+			std::istringstream stream(parser->nonOption(index));
 			stream >> f;
 			return f;
 		}
@@ -339,7 +342,7 @@ class Options {
 		/// note: does not check index bounds
 		double getArgumentDouble(unsigned int index) {
 			double d = 0.0;
-			istringstream stream(parser->nonOption(index));
+			std::istringstream stream(parser->nonOption(index));
 			stream >> d;
 			return d;
 		}
