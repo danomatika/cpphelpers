@@ -102,8 +102,27 @@ class CommandLine : public CmdLine {
 		 */
 		CommandLine(const std::string& message,
 			        const std::string& version = "none")
-			: CmdLine(message, ' ', version, true)
-			{this->setOutput(&output);}
+			: CmdLine(message, ' ', version, false) {
+			
+			Visitor* v;
+			v = new HelpVisitor(this, &_output);
+			SwitchArg* help = new SwitchArg("h", "help",
+							"Display usage and exit",
+							false, v);
+			add(help);
+			deleteOnExit(help);
+			deleteOnExit(v);
+
+			v = new VersionVisitor( this, &_output );
+			SwitchArg* vers = new SwitchArg("", "version",
+						"Display version and exit",
+						false, v);
+			add(vers);
+			deleteOnExit(vers);
+			deleteOnExit(v);
+
+			this->setOutput(&output);
+		}
 
 	private:
 
@@ -130,9 +149,10 @@ inline void Output::shortUsage(CmdLineInterface& _cmd, std::ostream& os) const {
 		s[s.length()-1] = '}';
 	}
 
+	s += " [options]";
 	// then the rest
 	for(ArgListIterator it = argList.begin(); it != argList.end(); it++) {
-		if(!xorHandler.contains((*it))) { // && (*it)->getName() != "")
+		if(!xorHandler.contains((*it)) && (*it)->shortID().at(0) == '<') {
 			s += " " + (*it)->shortID();
 		}
 	}
@@ -188,7 +208,13 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const {
 	
 	// rest of the args
 	for(ArgListIterator it = argList.begin(); it != argList.end();) {
-		if((*it)->shortID().at(0) != '<') { // ignore commands which begin with '<'
+		// ignore commands which begin with '<'
+		if((*it)->shortID().at(0) != '<') {
+			// remove ignore_rest arg "--" 
+			if((*it)->getName() == Arg::ignoreNameString()) {
+				it = argList.erase(it);
+				continue;
+			}
 			printLine(os, makeLongID((*it)),
 			          (*it)->getDescription(), 2, longestIdLen);
 			it = argList.erase(it); // remove arg from cmd list
@@ -211,18 +237,15 @@ inline void Output::longUsage(CmdLineInterface& _cmd, std::ostream& os) const {
 
 inline std::string Output::makeLongID(Arg* arg) const {
 	std::string id = "";
-	
 	if(arg->getFlag() != "") {
 		id += "-" + arg->getFlag();
 		if(arg->getName() != "") {
 			id += ", ";
 		}
 	}
-	
 	if (arg->getName() != "") {
 		id += "--" + arg->getName();
 	}
-	
 	return id;
 }
 
