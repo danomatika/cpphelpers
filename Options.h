@@ -50,7 +50,7 @@
 ///
 ///     // load the config file (if one exists)
 ///     if(options.numArguments() > 0) {
-///	        std::cout << "Loading " << options.getArgumentString(0);
+///         std::cout << "Loading " << options.getArgumentString(0);
 ///     }
 ///
 ///     // read option values if set
