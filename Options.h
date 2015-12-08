@@ -106,15 +106,15 @@
 ///     // parse and check help/version options manually
 ///     Options options("  example program which demos Options.h");
 ///     if(!options.parse(usage, argc, argv)) {
-///			return false;
+///     	return false;
 ///     }
 ///     if(options.isSet(HELP)) {
-///			options.printUsage(usage, "[FILE]");
-///			return false;
+///     	options.printUsage(usage, "[FILE]");
+///     	return false;
 ///     }
 ///     if(options.isSet(VERSION)) {
-///			std::cout << "1.2.3" << std::endl;
-///			return false;
+///     	std::cout << "1.2.3" << std::endl;
+///     	return false;
 ///     }
 ///
 ///     // load the config file (if one exists)
