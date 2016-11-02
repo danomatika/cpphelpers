@@ -23,6 +23,10 @@
 #include <string>
 #include <sstream>
 
+#if !defined( __WIN32__ ) && !defined( _WIN32 )
+	#include <unistd.h>
+#endif
+
 /// \class Path
 /// \brief cross-platform path string functions
 class Path {
@@ -32,12 +36,12 @@ class Path {
 		/// returns current directory
 		static string currentDir() {
 			std::string path;
-			char currDir[1024];
+			char currDir[PATH_MAX];
 			#if defined( __WIN32__ ) || defined( _WIN32 )
-				path = _getcwd(currDir, 1024);
+				path = _getcwd(currDir, PATH_MAX);
 				replace(path.begin(), path.end(), "/", "\\"); // fix any unixy paths...
 			#else // Mac / Linux
-				path = getcwd(currDir, 1024);
+				path = getcwd(currDir, PATH_MAX);
 			#endif
 			return path;
 		}
