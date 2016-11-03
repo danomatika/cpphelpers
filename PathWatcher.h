@@ -24,8 +24,10 @@
 
 #include <string>
 #include <vector>
+#include <queue>
 #include <thread>
 #include <mutex>
+#include <atomic>
 #include <functional>
 #include <sys/stat.h>
 
@@ -34,19 +36,87 @@
 ///
 /// detects creation, modification, and deletion/move events
 ///
-/// Example usage:
+/// can be used with a callback or via an event queue
+///
+/// Example queue/poll usage:
+///
+///     PathWatcher watcher;
+///
+///     ...
+///
+///     // poll for events
+///     watcher.update();
+///
+///     // check for any waiting events
+///     while(watcher.waitingEvents()) {
+///
+///         // get next event in the queue
+///         PathWatcher::Event event = watcher.nextEvent();
+///
+///         /// process the event
+///         switch(event.change) {
+///             case PathWatcher::CREATED:
+///                 std::cout << "path created: " << event.path << std::endl;
+///                 break;
+///             case PathWatcher::MODIFIED:
+///                 std::cout << "path modified: " << event.path << std::endl;
+///                 break;
+///             case PathWatcher::DELETED:
+///                 std::cout << "path deleted: " << event.path << std::endl;
+///                 break;
+///             default: // NONE
+///                 break;
+///         }
+///      }
+///
+/// Example queue/thread usage:
+///
+///     PathWatcher watcher;
+///
+///     // start the thread, otherwise call update() to check manually
+///    	watcher.start();
+///
+///     ...
+///
+///     // check for any waiting events
+///     while(watcher.waitingEvents()) {
+///
+///         // get next event in the queue
+///         PathWatcher::Event event = watcher.nextEvent();
+///
+///         /// process the event
+///         switch(event.change) {
+///             case PathWatcher::CREATED:
+///                 std::cout << "path created: " << event.path << std::endl;
+///                 break;
+///             case PathWatcher::MODIFIED:
+///                 std::cout << "path modified: " << event.path << std::endl;
+///                 break;
+///             case PathWatcher::DELETED:
+///                 std::cout << "path deleted: " << event.path << std::endl;
+///                 break;
+///             default: // NONE
+///                 break;
+///         }
+///     }
+///
+/// Example callback/thread usage:
 ///
 ///     PathWatcher watcher;
 ///
 ///     // add a path to watch
 ///	    watcher.addPath("test.txt");
 ///
-///     // start the thread, otherwise call update() to check manually
+///     // start the thread
 ///    	watcher.start();
 ///
 ///     // set callback as a function pointer or lambda
 ///     watcher.setCallback([](const PathWatcher::Event &event) {
-///         switch(path.change) {
+///
+///         // this is called within the watcher's thread, so you will need
+///         // to protect any shared resources with a mutex or atomics
+///
+///         switch(event.change) {
 ///             case PathWatcher::CREATED:
 ///                 std::cout << "path created: " << event.path << std::endl;
 ///                 break;
@@ -65,7 +135,10 @@ class PathWatcher {
 
 	public:
 
-		PathWatcher() {}
+		PathWatcher() {
+			running = false;
+			removeDeleted = false;
+		}
 		virtual ~PathWatcher() {stop();}
 
 	/// \section Paths
@@ -73,7 +146,6 @@ class PathWatcher {
 		/// add a path to watch, full or relative to current directory
 		/// optionally set contextual name
 		void addPath(const std::string &path, const std::string &name="") {
-			if(!pathExists(path)) {return;}
 			mutex.lock();
 			std::vector<Path>::iterator iter = std::find_if(paths.begin(), paths.end(),
 				[&path](Path const &p) {
@@ -126,7 +198,7 @@ class PathWatcher {
 			return access(path.c_str(), F_OK) == 0;
 		}
 
-	/// \section Watching
+	/// \section Watching for Changes
 	
 		/// the type of change
 		enum ChangeType {
@@ -138,12 +210,87 @@ class PathWatcher {
 	
 		/// a change event
 		struct Event {
-			ChangeType change; //< type of change: created, modified, deleted
-			std::string path;  //< path
+			ChangeType change = NONE; //< no change, created, modified, deleted
+			std::string path;  //< path, relative or absolute
 			std::string name;  //< optional contextual name
 		};
 
-		/// set callback to receive change events
+		/// manually check for changes, returns true if a change was detected
+		/// pushes change onto the queue or calls callback function if set
+		bool update() {
+			bool changed = false;
+			mutex.lock();
+			auto iter = paths.begin();
+			while(iter != paths.end()) {
+				Path &path = (*iter);
+				ChangeType change = path.changed();
+				if(change != NONE) {
+					changed = true;
+					Event event;
+					event.change = change;
+					event.path = path.path;
+					event.name = path.name;
+					if(callback) {
+						callback(event);
+					}
+					else {
+						queue.push(event);
+					}
+					if(change == DELETED && removeDeleted) {
+						paths.erase(iter);
+						continue;
+					}
+				}
+				iter++;
+			}
+			mutex.unlock();
+			return changed;
+		}
+	
+		/// remove deleted paths automatically? (default: false)
+		void setRemoveDeletedPaths(bool remove) {
+			removeDeleted = remove;
+		}
+	
+		/// manually remove any deleted or non-existing paths
+		void removeDeletedPaths() {
+			auto iter = paths.begin();
+			while(iter != paths.end()) {
+				Path &path = (*iter);
+				if(!path.exists) {
+					paths.erase(iter);
+				}
+				iter++;
+			}
+		}
+	
+	/// \section Event Queue
+	
+		/// returns true if there are any waiting events
+		bool waitingEvents() {
+			return !queue.empty();
+		}
+	
+		/// get the next event in the queue
+		/// returns an event with ChangeType of NONE if the queue is empty
+		Event nextEvent() {
+			std::lock_guard<std::mutex> lock(mutex);
+			if(queue.empty()) {
+				return Event();
+			}
+			else {
+				Event e = queue.front();
+				queue.pop();
+				return e;
+			}
+		}
+	
+	/// \section Thread
+	
+		/// set optional callback to receive change events
+		///
+		/// called within the watcher's thread, so you will need
+		/// to protect any shared resources with a mutex or atomics
 		///
 		/// function:
 		///
@@ -189,37 +336,6 @@ class PathWatcher {
 			mutex.unlock();
 		}
 	
-		/// remove deleted paths automatically? (default: false)
-		void setRemoveDeletedPaths(bool remove) {
-			removeDeleted = remove;
-		}
-
-		/// manually check for changes and call callback function for each modified path,
-		/// if a file has been deleted it is removed
-		void update() {
-			mutex.lock();
-			auto iter = std::begin(paths);
-			while(iter != std::end(paths)) {
-				Path &path = (*iter);
-				ChangeType change = path.changed();
-				if(change != NONE) {
-					if(callback) {
-						Event event;
-						event.change = change;
-						event.path = path.path;
-						event.name = path.name;
-						callback(event);
-					}
-					if(change == DELETED && removeDeleted) {
-						paths.erase(iter);
-						continue;
-					}
-				}
-				iter++;
-			}
-			mutex.unlock();
-		}
-
 		/// start a background thread to automatically check for changes,
 		/// sleep sets how often to check in ms
 		void start(unsigned int sleep=500) {
@@ -304,12 +420,15 @@ class PathWatcher {
 				}
 		};
 
-		bool running = false;          //< is the thread running?
-		std::thread *thread = nullptr; //< thread
-		std::mutex mutex;              //< thread data mutex
-		std::vector<Path> paths;       //< paths to watch
-		bool removeDeleted = false;    //< remove path when deleted?
+		std::vector<Path> paths;         //< paths to watch
+		std::atomic<bool> removeDeleted; //< remove path when deleted?
+	
+		std::queue<Event> queue; //< event queue
 	
 		/// change event callback function pointer
 		std::function<void(const PathWatcher::Event &event)> callback = nullptr;
+	
+		std::atomic<bool> running;     //< is the thread running?
+		std::thread *thread = nullptr; //< thread
+		std::mutex mutex;              //< thread data mutex
 };
