@@ -11,7 +11,7 @@
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
@@ -402,7 +402,7 @@ class Options {
 		/// note: strings must be const (literal)
 		void addArgument(const char *name, const char *help, bool required=false) {
 			if(nonOptions.empty()) { // add header
-				addHelp("\nArguments:\n");
+				addHelp("\nArguments:");
 			}
 			addHelp(help);
 			struct NonOption arg = {name, required};
