@@ -187,7 +187,7 @@ class Options {
 				}
 				else {
 					std::cerr << "Missing required argument(s), possibly one or more of:";
-					for(int i = 0; i < nonOptions.size(); ++i) {
+					for(unsigned int i = 0; i < nonOptions.size(); ++i) {
 						if(nonOptions[i].required) {
 							std::cerr << " " << nonOptions[i].name;
 						}
@@ -487,7 +487,7 @@ class Options {
 		/// note: is used automatically if there was a parse error
 		void printUsage() {
 			std::string argShortUsage = "";
-			for(int i = 0; i < nonOptions.size(); ++i) {
+			for(unsigned int i = 0; i < nonOptions.size(); ++i) {
 				NonOption &n = nonOptions[i];
 				if(n.required) {
 					argShortUsage += "["+(std::string)n.name+"]";
