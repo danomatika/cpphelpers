@@ -22,6 +22,7 @@
 
 #include <string>
 #include <sstream>
+#include <sys/stat.h>
 
 #if !defined( __WIN32__ ) && !defined( _WIN32 )
 	#include <unistd.h>
@@ -46,7 +47,27 @@ class Path {
 			return path;
 		}
 
-		/// returns true if path is abolsute, false if relative
+		/// returns true if a path exists
+		static bool exists(const std::string & path) {
+			return access(path.c_str(), F_OK) == 0;
+		}
+
+		/// returns true if a path exists and is readable
+		static bool isReadable(const std::string & path) {
+			return access(path.c_str(), R_OK) == 0;
+		}
+
+		/// returns true if a path exists and is writable
+		static bool isWritable(const std::string & path) {
+			return access(path.c_str(), W_OK) == 0;
+		}
+
+		/// returns true if a path exists and is executable
+		static bool isExecutable(const std::string & path) {
+			return access(path.c_str(), X_OK) == 0;
+		}
+
+		/// returns true if path is absolute, false if relative
 		static bool isAbsolute(std::string path) {
 			if(path.length() != 0 &&
 				(path[0] == separator || path.substr(1, 1) == ":")) {
