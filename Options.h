@@ -25,6 +25,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <cstdlib>
 #include "optionparser.h"
 
 /// \class Options
@@ -34,70 +35,92 @@
 ///
 /// Example usage:
 ///
-///     // option index enum
-///     enum optionNames {
-///     	UNKNOWN,
-///     	HELP,
-///     	VERS,
-///     	IP,
-///     	PORT,
-///     	MULTICAST
-///     };
-///
-///     // option and usage print descriptors, note the use of the Options::Arg functions
-///     // which provide extended type checks
-///     const option::Descriptor usage[] = {
-///     	{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:\n"},
-///     	{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tPrint usage and exit"},
-///     	{VERS, 0, "", "version", Options::Arg::None, "  --version \tPrint version and exit"},
-///     	{IP, 0, "i", "ip", Options::Arg::NonEmpty, "  -i, --ip \tIP address to send to (default: 127.0.0.1)"},
-///     	{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tPort to send to (default: 8880)"},
-///     	{MULTICAST, 0, "m", "multicast", Options::Arg::None, "  -m, --multicast \tMulticast listening group address (off by default)"},
-///         {UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
-///		    {UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file"},
-///     	{0, 0, 0, 0, 0, 0}
-///     };
-///
-///     // parse and check help/version options
-///     Options options("  example program which demos Options.h");
-///     if(!options.parse(usage, argc, argv)) {
-///     	return false;
-///     }
-///     if(options.isSet(HELP)) {
-///     	options.printUsage(usage, "[FILE]");
-///     	return false;
-///     }
-///     if(options.isSet(VERSION)) {
-///     	std::cout << "1.2.3" << std::endl;
-///     	return false;
-///     }
-///
-///     // load the config file (if one exists)
-///     if(options.numArguments() > 0) {
-///         std::cout << "Loading " << options.getArgumentString(0) << std::endl;
-///     }
-///
-///     // read option values if set
-///     if(options.isSet(IP))         {sendingIp = options.getString(IP);}
-///     if(options.isSet(PORT))       {sendingPort = options.getUInt(PORT);}
-///     if(options.isSet(MULTICAST))  {listeningMulticast = true;}
+/*
+
+#include "Options.h"
+
+#define VERSION "1.2.3"
+
+int main(int argc, char* argv[]) {
+
+	std::string sendingIp = "127.0.0.1";
+	int sendingPort = 8880;
+	bool listeningMulticast = false;
+
+    // option index enum
+    enum optionNames {
+    	UNKNOWN,
+    	HELP,
+    	VERS,
+    	IP,
+    	PORT,
+    	MULTICAST
+    };
+
+    // option and usage print descriptors, note the use of the Options::Arg functions
+    // which provide extended type checks
+    const option::Descriptor usage[] = {
+    	{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:\n"},
+    	{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tPrint usage and exit"},
+    	{VERS, 0, "", "version", Options::Arg::None, "  --version \tPrint version and exit"},
+    	{IP, 0, "i", "ip", Options::Arg::NonEmpty, "  -i, --ip \tIP address to send to (default: 127.0.0.1)"},
+    	{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tPort to send to (default: 8880)"},
+    	{MULTICAST, 0, "m", "multicast", Options::Arg::None, "  -m, --multicast \tMulticast listening group address (off by default)"},
+        {UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
+	    {UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file"},
+    	{0, 0, 0, 0, 0, 0}
+    };
+    
+    // parse and check help/version options
+    Options options("  example program which demos Options.h");
+    if(!options.parse(usage, argc, argv)) {
+    	return false;
+    }
+    if(options.isSet(HELP)) {
+    	options.printUsage(usage, "[FILE]");
+    	return false;
+    }
+    if(options.isSet(VERS)) {
+    	std::cout << VERSION << std::endl;
+    	return false;
+    }
+    
+    // load the config file (if one exists)
+    if(options.numArguments() > 0) {
+        std::cout << "Loading " << options.getArgumentString(0) << std::endl;
+    }
+
+    // read option values if set
+    if(options.isSet(IP))         {sendingIp = options.getString(IP);}
+    if(options.isSet(PORT))       {sendingPort = options.getUInt(PORT);}
+    if(options.isSet(MULTICAST))  {listeningMulticast = true;}
+
+    std::cout << "IP: " << sendingIp << std::endl
+              << "Port: " << sendingPort << std::endl
+              << "Multicast?: " << listeningMulticast << std::endl;
+
+    return 0;
+}
+*/
 ///
 /// Example usage print:
 ///
-///     Usage: example [options] [FILE]
-///
-///       example program which demos Options.h
-///
-///     Options:
-///       -h, --help           Print usage and exit
-///       --version            Print version and exit
-///       -i, --ip             IP address to send to (default: 127.0.0.1)
-///       -p, --port           Port to send to (default: 8880)
-///       -m, --multicast      Multicast listening group address (off by default)
-///
-///     Arguments:
-///
-///       FILE                 Optional XML config file
+/*
+Usage: ./test [options] [FILE]
+
+  example program which demos Options.h
+
+Options:
+
+  -h, --help      Print usage and exit
+  --version       Print version and exit
+  -i, --ip        IP address to send to (default: 127.0.0.1)
+  -p, --port      Port to send to (default: 8880)
+  -m, --multicast Multicast listening group address (off by default)
+
+Arguments:
+  FILE            Optional XML config file
+*/
 ///
 class Options {
 
