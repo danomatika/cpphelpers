@@ -40,7 +40,7 @@ class Path {
 			char currDir[PATH_MAX];
 			#if defined( __WIN32__ ) || defined( _WIN32 )
 				path = _getcwd(currDir, PATH_MAX);
-				replace(path.begin(), path.end(), "/", "\\"); // fix any unixy paths...
+				path.replace(path.begin(), path.end(), "/", "\\"); // fix any unixy paths...
 			#else // Mac / Linux
 				path = getcwd(currDir, PATH_MAX);
 			#endif
