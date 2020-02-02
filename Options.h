@@ -25,107 +25,102 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <cstdlib>
 #include "optionparser.h"
 
 /// \class Options
-/// \brief wrapper for The Lean Mean C++ Options Parser to allow dynamic creation & convenience type conversions
+/// \brief convenience wrapper for The Lean Mean C++ Options Parser which adds type conversions
 ///
+/// See The Lean Mean C++ Options Parser docs for details: http://optionparser.sourceforge.net
 ///
 /// Example usage:
 ///
-///     // create with optional program description and version strings
-///     Options options("  example program which demos Options.h", "1.2.3");
-///
-///     // add option and argument descriptors
-///     options.addString("IP", "i", "ip", "  -i, --ip \tIP address to send to (default: 127.0.0.1)");
-///     options.addInteger("PORT","p", "port", "  -p, --port \tPort to send to (default: 8880)");
-///     options.addSwitch("MULTICAST", "m", "multicast", "  -m, --multicast \tMulticast listening group address (off by default)");
-///     options.addArgument("FILE", "  FILE \tOptional XML config file");
-///
-///     // parse, returns false on error or help/version prints
-///     if(!options.parse(argc, argv)) {
-///         return false;
-///     }
-///
-///     // load the config file (if one exists)
-///     if(options.numArguments() > 0) {
-///         std::cout << "Loading " << options.getArgumentString(0) << std::endl;
-///     }
-///
-///     // read option values if set
-///     if(options.isSet("IP"))         {sendingIp = options.getString("IP");}
-///     if(options.isSet("PORT"))       {sendingPort = options.getUInt("PORT");}
-///     if(options.isSet("MULTICAST"))  {listeningMulticast = true;}
+/*
+
+#include "Options.h"
+
+#define VERSION "1.2.3"
+
+int main(int argc, char* argv[]) {
+
+	std::string sendingIp = "127.0.0.1";
+	int sendingPort = 8880;
+	bool listeningMulticast = false;
+
+    // option index enum
+    enum optionNames {
+    	UNKNOWN,
+    	HELP,
+    	VERS,
+    	IP,
+    	PORT,
+    	MULTICAST
+    };
+
+    // option and usage print descriptors, note the use of the Options::Arg functions
+    // which provide extended type checks
+    const option::Descriptor usage[] = {
+    	{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:\n"},
+    	{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tPrint usage and exit"},
+    	{VERS, 0, "", "version", Options::Arg::None, "  --version \tPrint version and exit"},
+    	{IP, 0, "i", "ip", Options::Arg::NonEmpty, "  -i, --ip \tIP address to send to (default: 127.0.0.1)"},
+    	{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tPort to send to (default: 8880)"},
+    	{MULTICAST, 0, "m", "multicast", Options::Arg::None, "  -m, --multicast \tMulticast listening group address (off by default)"},
+        {UNKNOWN, 0, "", "", Options::Arg::Unknown, "\nArguments:"},
+	    {UNKNOWN, 0, "", "", Options::Arg::None, "  FILE \tOptional XML config file"},
+    	{0, 0, 0, 0, 0, 0}
+    };
+    
+    // parse and check help/version options
+    Options options("  example program which demos Options.h");
+    if(!options.parse(usage, argc, argv)) {
+    	return false;
+    }
+    if(options.isSet(HELP)) {
+    	options.printUsage(usage, "[FILE]");
+    	return false;
+    }
+    if(options.isSet(VERS)) {
+    	std::cout << VERSION << std::endl;
+    	return false;
+    }
+    
+    // load the config file (if one exists)
+    if(options.numArguments() > 0) {
+        std::cout << "Loading " << options.getArgumentString(0) << std::endl;
+    }
+
+    // read option values if set
+    if(options.isSet(IP))         {sendingIp = options.getString(IP);}
+    if(options.isSet(PORT))       {sendingPort = options.getUInt(PORT);}
+    if(options.isSet(MULTICAST))  {listeningMulticast = true;}
+
+    std::cout << "IP: " << sendingIp << std::endl
+              << "Port: " << sendingPort << std::endl
+              << "Multicast?: " << listeningMulticast << std::endl;
+
+    return 0;
+}
+*/
 ///
 /// Example usage print:
 ///
-///     Usage: example [options] [FILE]
-///
-///       example program which demos Options.h
-///
-///     Options:
-///       -h, --help           Print usage and exit
-///       --version            Print version and exit
-///       -i, --ip             IP address to send to (default: 127.0.0.1)
-///       -p, --port           Port to send to (default: 8880)
-///       -m, --multicast      Multicast listening group address (off by default)
-///
-///     Arguments:
-///
-///       FILE                 Optional XML config file
-///
-/// You can also use the lower level TLMC++OP interface that takes an
-/// option::Descriptor struct and enum-based option indices. See The Lean Mean
-/// C++ Options Parser docs for lower level details: http://optionparser.sourceforge.net
-///
-/// Example code which provides the same functionality as the previous example:
-///
-///     // option index enum
-///     enum optionNames {
-///     	UNKNOWN,
-///     	HELP,
-///     	VERS,
-///     	IP,
-///     	PORT,
-///     	MULTICAST
-///     };
-///
-///     // option and usage print descriptors, note the use of the Options::Arg functions
-///     // which provide extended type checks
-///     const option::Descriptor usage[] = {
-///     	{UNKNOWN, 0, "", "", Options::Arg::Unknown, "Options:\n"},
-///     	{HELP, 0, "h", "help", Options::Arg::None, "  -h, --help \tPrint usage and exit"},
-///     	{VERS, 0, "", "version", Options::Arg::None, "  --version \tPrint version and exit"},
-///     	{IP, 0, "i", "ip", Options::Arg::NonEmpty, "  -i, --ip \tIP address to send to (default: 127.0.0.1)"},
-///     	{PORT, 0, "p", "port", Options::Arg::Integer, "  -p, --port \tPort to send to (default: 8880)"},
-///     	{MULTICAST, 0, "m", "multicast", Options::Arg::Decimal, "  -m, --multicast \tMulticast listening group address (off by default)"},
-///     	{UNKNOWN, 0, "", "", Options::Arg::None, "\nArguments:\n  FILE \tOptional XML config file"},
-///     	{0, 0, 0, 0, 0, 0}
-///     };
-///
-///     // parse and check help/version options manually
-///     Options options("  example program which demos Options.h");
-///     if(!options.parse(usage, argc, argv)) {
-///     	return false;
-///     }
-///     if(options.isSet(HELP)) {
-///     	options.printUsage(usage, "[FILE]");
-///     	return false;
-///     }
-///     if(options.isSet(VERSION)) {
-///     	std::cout << "1.2.3" << std::endl;
-///     	return false;
-///     }
-///
-///     // load the config file (if one exists)
-///     if(options.numArguments() > 0) {
-///         std::cout << "Loading " << options.getArgumentString(0) << std::endl;
-///     }
-///
-///     // read option values if set
-///     if(options.isSet(IP))         {sendingIp = options.getString(IP);}
-///     if(options.isSet(PORT))       {sendingPort = options.getUInt(PORT);}
-///     if(options.isSet(MULTICAST))  {listeningMulticast = true;}
+/*
+Usage: ./test [options] [FILE]
+
+  example program which demos Options.h
+
+Options:
+
+  -h, --help      Print usage and exit
+  --version       Print version and exit
+  -i, --ip        IP address to send to (default: 127.0.0.1)
+  -p, --port      Port to send to (default: 8880)
+  -m, --multicast Multicast listening group address (off by default)
+
+Arguments:
+  FILE            Optional XML config file
+*/
 ///
 class Options {
 
@@ -133,23 +128,10 @@ class Options {
 	
 		/// constructor
 		/// description: optional string printed after Usage line
-		/// version: optional version string, --version switch added if set
-		/// note: version & help options are ignored if using the lower level
-		///       parser function
-		Options(std::string description="", std::string version="") : description(description), version(version), name("name") {
-			indices["UKNOWN"] = 0;
-			pushDescriptor(0, 0, "", "", Arg::Unknown, "Options:");
-			indices["HELP"] = 1;
-			pushDescriptor(1, 0, "h" , "help", Arg::None, "  -h, --help  \tPrint usage and exit");
-			if(version != "") {
-				indices["VERSION"] = 2;
-				pushDescriptor(2, 0, "" , "version", Arg::None, "  --version  \tPrint version and exit");
-			}
-			pushEndDescriptor();
+		Options(std::string description="") : description(description), name("name") {
 			parser = NULL;
 			options = NULL;
 			buffer = NULL;
-			numRequiredNonOptions = 0;
 		}
 	
 		/// destructor
@@ -167,42 +149,8 @@ class Options {
 			buffer = NULL;
 		}
 	
-		/// parse commandline arguments
-		/// returns true on success, false on parse error or help/version switches
-		bool parse(int argc, char **argv) {
-			if(!parse(descriptors.data(), argc, argv)) {
-				return false;
-			}
-			if(options[indices["HELP"]]) {
-				printUsage();
-				return false;
-			}
-			if(options[indices["VERSION"]]) {
-				std::cout << version << std::endl;
-				return false;
-			}
-			if(parser->nonOptionsCount() < numRequiredNonOptions) {
-				if(numRequiredNonOptions == 1) {
-					std::cerr << "Missing required argument: " << nonOptions[0].name << std::endl;
-				}
-				else {
-					std::cerr << "Missing required argument(s), possibly one or more of:";
-					for(int i = 0; i < nonOptions.size(); ++i) {
-						if(nonOptions[i].required) {
-							std::cerr << " " << nonOptions[i].name;
-						}
-					}
-					std::cerr << std::endl;
-				}
-				return false;
-			}
-			return true;
-		}
-	
-		/// parse commandline arguments using a TLMC++OP Descriptors array (low level)
-		/// returns true on success, false on parse error or help/version switches
-		/// note: ignores built in options ("Options:" print, help & verison options)
-		///       so you'll need to povide them manually in the array
+		/// parse commandline arguments using a TLMC++OP Descriptors array
+		/// returns true on success, false on parse error
 		bool parse(const option::Descriptor usage[], int argc, char **argv) {
 			clear();
 			if(argc > 0) {
@@ -219,110 +167,6 @@ class Options {
 				return false;
 			}
 			return true;
-		}
-	
-	/// \section Add Options
-	
-		/// add an option which takes no value
-		/// note: strings must be const (literal) or option may not be added correctly
-		void addSwitch(std::string name, const char* shortopt, const char *longopt, const char *help) {
-			addOption(name, 0, shortopt, longopt, Arg::None, help);
-		}
-	
-		/// add an option which expects a string value, optionally allow empty values aka ""
-		/// note: strings must be const (literal) or option may not be added correctly
-		void addString(std::string name, const char* shortopt, const char *longopt, const char *help, bool allowEmpty=true) {
-			addOption(name, 0, shortopt, longopt, (allowEmpty ? Arg::Required : Arg::NonEmpty), help);
-		}
-	
-		/// add an option which expects a boolean value (0/1, yes/no, true/false)
-		/// note: strings must be const (literal) or option may not be added correctly
-		void addBool(std::string name, const char* shortopt, const char *longopt, const char *help) {
-			addOption(name, 0, shortopt, longopt, Arg::Bool, help);
-		}
-	
-		/// add an option which expects a numeric integer value (non-decimal)
-		/// note: strings must be const (literal) or option may not be added correctly
-		void addInteger(std::string name, const char* shortopt, const char *longopt, const char *help) {
-			addOption(name, 0, shortopt, longopt, Arg::Integer, help);
-		}
-	
-		/// add an option which expects a numeric decimal value
-		/// note: strings must be const (literal) or option may not be added correctly
-		void addDecimal(std::string name, const char* shortopt, const char *longopt, const char *help) {
-			addOption(name, 0, shortopt, longopt, Arg::Decimal, help);
-		}
-	
-		/// add a string to the help printout
-		/// note: strings must be const (literal)
-		void addHelp(const char *help) {
-			addOption("UNKNOWN", 0, "", "", Arg::None, help);
-		}
-	
-		/// add base TLMC++OP option (low level)
-		/// note: strings must be const or option may not be added correctly
-		/// note: ignores built in options ("Options:" print, help & verison options)
-		///       so you'll need to provide in the array and handle them manually
-		void addOption(std::string name, const int type, const char *shortopt, const char *longopt, const option::CheckArg checkArg, const char *help) {
-			std::map<std::string,unsigned int>::iterator iter = indices.find(name);
-			if(iter == indices.end()) {
-				unsigned int index = descriptors.size()-1;
-				indices[name] = index;
-			}
-			descriptors.pop_back();
-			pushDescriptor(indices[name], 0, shortopt, longopt, checkArg, help);
-			pushEndDescriptor();
-		}
-	
-	/// \section Read Option Values Via Name
-	
-		/// is an option set?
-		/// use this to check option existence before getting a value
-		bool isSet(std::string name) {
-			return options[indices[name]];
-		}
-	
-		/// convert option from a string
-		/// boolean values are 1/0, yes/no, true/false
-		/// note: does not check index bounds
-		bool getBool(std::string name) {
-			return getBool(indices[name]);
-		}
-	
-		/// convert option from a string
-		/// note: does not check index bounds
-		int getInt(std::string name) {
-			return getInt(indices[name]);
-		}
-	
-		/// convert option from a string
-		/// note: does not check index bounds
-		unsigned int getUInt(std::string name) {
-			return getUInt(indices[name]);
-		}
-	
-		/// convert option from a string
-		/// note: does not check index bounds
-		float getFloat(std::string name) {
-			return getFloat(indices[name]);
-		}
-	
-		/// convert option from a string
-		/// note: does not check index bounds
-		double getDouble(std::string name) {
-			return getDouble(indices[name]);
-		}
-	
-		/// get option
-		/// note: does not check index bounds
-		std::string getString(std::string name) {
-			return options[indices[name]].last()->arg;
-		}
-	
-		/// get the low level TLMC++OP option
-		/// note: does not check index bounds
-		option::Option* getOption(std::string name) {
-			return options[indices[name]];
 		}
 	
 	/// \section Read Option Values Via Index
@@ -393,24 +237,6 @@ class Options {
 		}
 	
 	/// \section Read Non-option Arguments
-	
-		/// add a non-option argument
-		/// name is the usage name for this argument (not an index) ie. "FILE"
-		/// help is the full usage help line ie. "  FILE \tXML config file"
-		/// required is the non-option argument required? if so, a simple
-		///           check is performed during parsing
-		/// note: strings must be const (literal)
-		void addArgument(const char *name, const char *help, bool required=false) {
-			if(nonOptions.empty()) { // add header
-				addHelp("\nArguments:");
-			}
-			addHelp(help);
-			struct NonOption arg = {name, required};
-			nonOptions.push_back(arg);
-			if(required) {
-				numRequiredNonOptions++;
-			}
-		}
 	
 		/// get the number of non-option arguments
 		unsigned int numArguments() {
@@ -483,25 +309,6 @@ class Options {
 			std::cout << std::endl;
 		}
 	
-		/// print usage, use *after* parsing otherwise program name won't be set
-		/// note: is used automatically if there was a parse error
-		void printUsage() {
-			std::string argShortUsage = "";
-			for(int i = 0; i < nonOptions.size(); ++i) {
-				NonOption &n = nonOptions[i];
-				if(n.required) {
-					argShortUsage += "["+(std::string)n.name+"]";
-				}
-				else {
-					argShortUsage += (std::string)n.name;
-				}
-				if(i < nonOptions.size()-1) {
-					std::cout << " ";
-				}
-			}
-			printUsage(descriptors.data(), argShortUsage);
-		}
-	
 		/// print usage using a TLMC++OP Descriptor array (low level),
 		/// use *after* parsing otherwise program name won't be set
 		///
@@ -509,8 +316,8 @@ class Options {
 		/// "Usage: prog_name [options"
 		///
 		/// note: is used automatically if there was a parse error
-		/// note: ignores built in options ("Options:" print, help & verison options)
-		///       so you'll need to povide them manually in the array
+		/// note: ignores built in options ("Options:" print, help & version options)
+		///       so you'll need to provide them manually in the array
 		void printUsage(const option::Descriptor usage[], std::string argShortUsage="") {
 			std::cout << "Usage: " << name << " [options]";
 			if(argShortUsage != "") {
@@ -594,38 +401,11 @@ class Options {
 		};
 	
 	protected:
-	
-		/// a non-option argument descriptor
-		struct NonOption {
-			const char *name; //< non-option argument name for printing
-			const bool required; //< is this non-option argument required?
-		};
-	
-		/// push descriptor struct, requires intermediate variable
-		void pushDescriptor(const unsigned int index, const int type,
-		                    const char* shortopt, const char *longopt,
-		                    const option::CheckArg check, const char* help) {
-			struct option::Descriptor d = {index, type, shortopt, longopt, check, help};
-			descriptors.push_back(d);
-		}
-	
-		/// push array terminator struct
-		void pushEndDescriptor() {
-			struct option::Descriptor end = {0, 0, NULL, NULL, 0, NULL};
-			descriptors.push_back(end);
-		}
 
 		std::string description; //< optional description line
-		std::string version; //< optional version string
 		std::string name; //< program name (aka arg 0), only set after parsing
-
-		std::map<std::string,unsigned int> indices; //< string keys to options index
-		std::vector<option::Descriptor> descriptors; //< option descriptors
 	
-		option::Parser *parser; //< option parser, not vlai until after parsing
+		option::Parser *parser; //< option parser, not valid until after parsing
 		option::Option *options; //< parsed options, arrayed by index
 		option::Option *buffer; //< raw parsed option buffer
-	
-		std::vector<NonOption> nonOptions; //< non-option argument descriptors
-		int numRequiredNonOptions; //< number of required non-option arguments
 };

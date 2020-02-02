@@ -124,7 +124,7 @@ class Path {
 		/// join path components into a string
 		static std::string join(std::vector<std::string> &components) {
 			std::string path = "";
-			for(int i = 0; i < components.size(); ++i) {
+			for(unsigned int i = 0; i < components.size(); ++i) {
 				path = path + separator + components[i];
 			}
 			return path;
