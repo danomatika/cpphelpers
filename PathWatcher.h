@@ -147,8 +147,8 @@ class PathWatcher {
 		/// optionally set contextual name
 		void addPath(const std::string &path, const std::string &name="") {
 			mutex.lock();
-			std::vector<Path>::iterator iter = std::find_if(paths.begin(), paths.end(),
-				[&path](Path const &p) {
+			std::vector<Path>::iterator iter = std::find_if(
+				paths.begin(), paths.end(), [&path](Path const &p) {
 					return p.path == path;
 				}
 			);
@@ -161,8 +161,8 @@ class PathWatcher {
 		/// remove a watched path
 		void removePath(const std::string &path) {
 			mutex.lock();
-			std::vector<Path>::iterator iter = std::find_if(paths.begin(), paths.end(),
-				[&path](Path const &p) {
+			std::vector<Path>::iterator iter = std::find_if(
+				paths.begin(), paths.end(), [&path](Path const &p) {
 					return p.path == path;
 				}
 			);
@@ -175,8 +175,8 @@ class PathWatcher {
 		/// remove a watched path by name
 		void removePathByName(const std::string &name) {
 			mutex.lock();
-			std::vector<Path>::iterator iter = std::find_if(paths.begin(), paths.end(),
-				[&name](Path const &p) {
+			std::vector<Path>::iterator iter = std::find_if(
+				paths.begin(), paths.end(), [&name](Path const &p) {
 					return p.name == name;
 				}
 			);
@@ -202,17 +202,17 @@ class PathWatcher {
 	
 		/// the type of change
 		enum ChangeType {
-			NONE,     //< path has not changed
-			CREATED,  //< path was created
-			MODIFIED, //< path was modified
-			DELETED   //< path was deleted or moved
+			NONE,     ///< path has not changed
+			CREATED,  ///< path was created
+			MODIFIED, ///< path was modified
+			DELETED   ///< path was deleted or moved
 		};
 	
 		/// a change event
 		struct Event {
-			ChangeType change = NONE; //< no change, created, modified, deleted
-			std::string path;  //< path, relative or absolute
-			std::string name;  //< optional contextual name
+			ChangeType change = NONE; ///< no change, created, modified, deleted
+			std::string path; ///< path, relative or absolute
+			std::string name; ///< optional contextual name
 		};
 
 		/// manually check for changes, returns true if a change was detected
@@ -370,10 +370,10 @@ class PathWatcher {
 			
 			public:
 			
-				std::string path;    //< relative or absolute path
-				std::string name;	 //< optional contextual name
-				long modified = 0;   //< last modification st_mtime
-				bool exists = true;  //< does the path exist?
+				std::string path;    ///< relative or absolute path
+				std::string name;    ///< optional contextual name
+				long modified = 0;   ///< last modification st_mtime
+				bool exists = true;  ///< does the path exist?
 			
 				/// create a new Path to watch with optional name
 				Path(const std::string &path, const std::string &name="") {
@@ -420,15 +420,15 @@ class PathWatcher {
 				}
 		};
 
-		std::vector<Path> paths;         //< paths to watch
-		std::atomic<bool> removeDeleted; //< remove path when deleted?
+		std::vector<Path> paths;         ///< paths to watch
+		std::atomic<bool> removeDeleted; ///< remove path when deleted?
 	
-		std::queue<Event> queue; //< event queue
+		std::queue<Event> queue; ///< event queue
 	
 		/// change event callback function pointer
 		std::function<void(const PathWatcher::Event &event)> callback = nullptr;
 	
-		std::atomic<bool> running;     //< is the thread running?
-		std::thread *thread = nullptr; //< thread
-		std::mutex mutex;              //< thread data mutex
+		std::atomic<bool> running;     ///< is the thread running?
+		std::thread *thread = nullptr; ///< thread
+		std::mutex mutex;              ///< thread data mutex
 };

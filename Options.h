@@ -402,10 +402,10 @@ class Options {
 	
 	protected:
 
-		std::string description; //< optional description line
-		std::string name; //< program name (aka arg 0), only set after parsing
+		std::string description; ///< optional description line
+		std::string name; ///< program name (aka arg 0), only set after parsing
 	
-		option::Parser *parser; //< option parser, not valid until after parsing
-		option::Option *options; //< parsed options, arrayed by index
-		option::Option *buffer; //< raw parsed option buffer
+		option::Parser *parser; ///< option parser, not valid until after parsing
+		option::Option *options; ///< parsed options, arrayed by index
+		option::Option *buffer; ///< raw parsed option buffer
 };
