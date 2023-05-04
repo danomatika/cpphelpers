@@ -22,6 +22,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 #include <sys/stat.h>
 
 #if !defined( __WIN32__ ) && !defined( _WIN32 )
