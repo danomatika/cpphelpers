@@ -22,6 +22,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 #include <sys/stat.h>
 
 #if !defined( __WIN32__ ) && !defined( _WIN32 )
@@ -35,7 +36,7 @@ class Path {
 	public:
 
 		/// returns current directory
-		static string currentDir() {
+		static std::string currentDir() {
 			std::string path;
 			char currDir[PATH_MAX];
 			#if defined( __WIN32__ ) || defined( _WIN32 )
@@ -111,8 +112,8 @@ class Path {
 		}
 
 		/// split the path into it's components
-		static std::vector<string> split(std::string path) {
-			std::vector<string> components;
+		static std::vector<std::string> split(std::string path) {
+			std::vector<std::string> components;
 			std::istringstream line(path);
 			std::string token;
 			while(std::getline(line, token, separator)) {
