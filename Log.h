@@ -29,6 +29,15 @@
 #define LOG_WARN   Log(Log::LOG_LEVEL_WARN)
 #define LOG_ERROR  Log(Log::LOG_LEVEL_ERROR)
 
+// flush after printing on windows to avoid console output buffering issues
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#define LOG_FLUSH_COUT std::cout.flush();
+#define LOG_FLUSH_CERR std::cerr.flush();
+#else
+#define LOG_FLUSH_COUT
+#define LOG_FLUSH_CERR
+#endif
+
 /// \class Log
 /// \brief a simple stream-based logger
 ///
@@ -59,20 +68,24 @@ class Log {
 				case LOG_LEVEL_NORMAL:
 					// must flush or we wont get any output until *after* the mainLoop
 					std::cout << m_line.str();
+					LOG_FLUSH_COUT
 					break;
 
 				case LOG_LEVEL_DEBUG:
 					#ifdef DEBUG
 					std::cout << "Debug: " << m_line.str();
+					LOG_FLUSH_COUT
 					#endif
 					break;
 
 				case LOG_LEVEL_WARN:
 					std::cerr << "Warn: " << m_line.str();
+					LOG_FLUSH_CERR
 					break;
 
 				case LOG_LEVEL_ERROR:
 					std::cerr << "Error: " << m_line.str();
+					LOG_FLUSH_CERR
 					break;
 			}
 		}
