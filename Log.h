@@ -2,7 +2,7 @@
 
 	Log.h
 
-	Copyright (C) 2010 Dan Wilcox <danomatika@gmail.com>
+	Copyright (C) 2010, 2024 Dan Wilcox <danomatika@gmail.com>
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -24,10 +24,11 @@
 #include <sstream>
 
 // convenience defines
-#define LOG        Log(Log::LOG_LEVEL_NORMAL)
-#define LOG_DEBUG  Log(Log::LOG_LEVEL_DEBUG)
-#define LOG_WARN   Log(Log::LOG_LEVEL_WARN)
-#define LOG_ERROR  Log(Log::LOG_LEVEL_ERROR)
+#define LOG         Log(Log::LEVEL_NORMAL)
+#define LOG_DEBUG   Log(Log::LEVEL_DEBUG)
+#define LOG_VERBOSE Log(Log::LEVEL_VERBOSE)
+#define LOG_WARN    Log(Log::LEVEL_WARN)
+#define LOG_ERROR   Log(Log::LEVEL_ERROR)
 
 // flush after printing on windows to avoid console output buffering issues
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -36,6 +37,15 @@
 #else
 #define LOG_FLUSH_COUT
 #define LOG_FLUSH_CERR
+#endif
+
+/// filter using static Log::logLevel
+/// note: storage and a default value needs to be set in a .cpp file
+///       ex. Log::Level Log::logLevel = Log::LEVEL_NORMAL;
+#ifdef LOG_STATIC_LEVEL
+#define LOG_FILTER if(m_level < Log::logLevel) {return;}
+#else
+#define LOG_FILTER
 #endif
 
 /// \class Log
@@ -52,38 +62,49 @@ class Log {
 
 		/// log level enum
 		enum Level {
-			LOG_LEVEL_NORMAL,
-			LOG_LEVEL_DEBUG,
-			LOG_LEVEL_WARN,
-			LOG_LEVEL_ERROR
+			LEVEL_DEBUG,   ///< prints with DEBUG defined only
+			LEVEL_VERBOSE, ///< verbose info
+			LEVEL_NORMAL,  ///< normal info
+			LEVEL_WARN,    ///< warnings
+			LEVEL_ERROR    ///< errors
 		};
 
+		#ifdef LOG_STATIC_LEVEL
+		static Level logLevel; ///< levels below this will be filtered
+		#endif
+
 		/// select log level, default: normal
-		Log(Level level=LOG_LEVEL_NORMAL) : m_level(level) {}
+		Log(Level level=LEVEL_NORMAL) : m_level(level) {}
 
 		/// does the actual printing on exit
 		~Log() {
+			LOG_FILTER
 			switch(m_level) {
-
-				case LOG_LEVEL_NORMAL:
-					// must flush or we wont get any output until *after* the mainLoop
-					std::cout << m_line.str();
-					LOG_FLUSH_COUT
-					break;
-
-				case LOG_LEVEL_DEBUG:
+				case LEVEL_DEBUG:
 					#ifdef DEBUG
 					std::cout << "Debug: " << m_line.str();
 					LOG_FLUSH_COUT
 					#endif
 					break;
 
-				case LOG_LEVEL_WARN:
+				case LEVEL_VERBOSE:
+					// must flush or we wont get any output until *after* the mainLoop
+					std::cout << m_line.str();
+					LOG_FLUSH_COUT
+					break;
+
+				case LEVEL_NORMAL:
+					// must flush or we wont get any output until *after* the mainLoop
+					std::cout << m_line.str();
+					LOG_FLUSH_COUT
+					break;
+
+				case LEVEL_WARN:
 					std::cerr << "Warn: " << m_line.str();
 					LOG_FLUSH_CERR
 					break;
 
-				case LOG_LEVEL_ERROR:
+				case LEVEL_ERROR:
 					std::cerr << "Error: " << m_line.str();
 					LOG_FLUSH_CERR
 					break;

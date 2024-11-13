@@ -3,7 +3,7 @@ cpp helpers
 
 C++ class helpers I use in a few projects:
 
-* Log.h: a streaming log class with settable levels
+* Log.h: a streaming log class with settable levels and optional filtering
 * Path.h: cross-platform path string functions
 * PathWatcher.h: cross-platform path change watcher
 * Options.h: convenience wrapper for The Lean Mean C++ Options Parser which adds type conversions
