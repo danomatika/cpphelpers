@@ -45,6 +45,7 @@
 #ifdef LOG_STATIC_LEVEL
 #define LOG_FILTER if(m_level < Log::logLevel) {return;}
 #else
+// otherwise always print, except debug is only available if DEBUG is defined
 #define LOG_FILTER
 #endif
 
@@ -62,11 +63,11 @@ class Log {
 
 		/// log level enum
 		enum Level {
-			LEVEL_DEBUG,   ///< prints with DEBUG defined only
-			LEVEL_VERBOSE, ///< verbose info
-			LEVEL_NORMAL,  ///< normal info
-			LEVEL_WARN,    ///< warnings
-			LEVEL_ERROR    ///< errors
+			LEVEL_DEBUG   = -2, ///< prints with DEBUG defined only
+			LEVEL_VERBOSE = -1, ///< verbose info
+			LEVEL_NORMAL  =  0, ///< normal info
+			LEVEL_WARN    =  1, ///< warnings
+			LEVEL_ERROR   =  2  ///< errors
 		};
 
 		#ifdef LOG_STATIC_LEVEL
@@ -81,20 +82,18 @@ class Log {
 			LOG_FILTER
 			switch(m_level) {
 				case LEVEL_DEBUG:
-					#ifdef DEBUG
+					#if defined(LOG_STATIC_LEVEL) || defined(DEBUG)
 					std::cout << "Debug: " << m_line.str();
 					LOG_FLUSH_COUT
 					#endif
 					break;
 
 				case LEVEL_VERBOSE:
-					// must flush or we wont get any output until *after* the mainLoop
 					std::cout << m_line.str();
 					LOG_FLUSH_COUT
 					break;
 
 				case LEVEL_NORMAL:
-					// must flush or we wont get any output until *after* the mainLoop
 					std::cout << m_line.str();
 					LOG_FLUSH_COUT
 					break;

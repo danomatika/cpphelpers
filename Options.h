@@ -173,8 +173,15 @@ class Options {
 	
 		/// is an option set?
 		/// use this to check option existence before getting a value
+		/// note: does not check index bounds
 		bool isSet(unsigned int index) {
 			return options[index];
+		}
+
+		/// how many times was the option set?
+		/// note: does not check index bounds
+		int count(unsigned int index) {
+			return options[index].count();
 		}
 	
 		/// convert option from a string
